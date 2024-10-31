@@ -32,8 +32,6 @@ yarn-error.log
 .env.example
 .gitattributes
 .styleci.yml
-CHANGELOG.md
-README.md
 artisan
 composer.json
 composer.lock
