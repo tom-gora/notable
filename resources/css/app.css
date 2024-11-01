@@ -1,3 +1,67 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+:root {
+    --accent-primary: #da614c;
+    --accent-primary-subtle: #e9a094;
+    --accent-primary-focus: #bd432e;
+    --accent-primary-content: #fbefed;
+
+    --accent-secondary: #77af7f;
+    --accent-secondary-subtle: #adcfb2;
+    --accent-secondary-focus: #5f8c66;
+    --accent-secondary-content: #f1f7f2;
+
+    --neutral: #353129;
+    --neutral-subtle: #7c725a;
+    --neutral-focus: #2a2721;
+    --neutral-content: #ebeaea;
+
+    --text-primary: #131212;
+    --text-subtle: #302e2b;
+
+    --surface: #edd4a6;
+    --surface-strong: #daa84c;
+
+    --base-100: #f8eee2;
+    --base-200: #c0b8ad;
+    --base-300: #9a938a;
+
+    --info: #478ec7;
+    --success: #009485;
+    --warning: #ff9900;
+    --error: #ff5724;
+}
+
+:root[class~="dark"] {
+    --accent-primary: #da614c;
+    --accent-primary-subtle: #e9a094;
+    --accent-primary-focus: #bd432e;
+    --accent-primary-content: #fbefed;
+
+    --accent-secondary: #77af7f;
+    --accent-secondary-subtle: #adcfb2;
+    --accent-secondary-focus: #5f8c66;
+    --accent-secondary-content: #f1f7f2;
+
+    --neutral: #353129;
+    --neutral-subtle: #7c725a;
+    --neutral-focus: #2a2721;
+    --neutral-content: #ebeaea;
+
+    --text-primary: #e7dcbc;
+    --text-subtle: #b6ad90;
+
+    --surface: #edd4a6;
+    --surface-strong: #daa84c;
+
+    --base-100: #181716;
+    --base-200: #0c0c0b;
+    --base-300: #020202;
+
+    --info: #478ec7;
+    --success: #009485;
+    --warning: #ff9900;
+    --error: #ff5724;
+}
