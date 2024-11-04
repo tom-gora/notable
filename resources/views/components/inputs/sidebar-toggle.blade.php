@@ -1,10 +1,15 @@
-{{-- NOTE: base src https://www.patrykgulas.com/hamburgers --}}
-<button class="group m-6 z-50 fixed z-100 tham tham-e-arrow tham-w-6 " type="button"
-    data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation" aria-controls="drawer-navigation">
-    <div class="tham tham-e-squeeze tham-w-6">
+@use(App\Helpers\UI)
+
+
+{{-- NOTE: src https://www.patrykgulas.com/hamburgers --}}
+<button
+    class="tham tham-e-arrow tham-w-6 fixed top-0 z-50 mx-4 mt-2 {{ UI::getSidebarState() ? 'tham-active' : '' }} p-6 rounded-lg hover:bg-base-100 focus-visible:bg-base-100"
+    type="button" role="switch" data-drawer-target="drawer-navigation" data-drawer-show="drawer-navigation"
+    aria-controls="drawer-navigation">
+    <div class="tham tham-e-arrow tham-w-6 hover:!opacity-100 focus-visible:!opacity-100">
         <div class="tham-box">
             <div
-                class="tham-inner bg-accent-primary group-hover:scale-105 group-focus-visible:scale-105 group-hover:bg-accent-secondary-focus group-focus-visible:bg-accent-secondary-focus">
+                class="tham-inner {{ UI::getSidebarState() ? 'bg-text-primary' : 'bg-accent-primary' }}  transition-all duration-100">
             </div>
         </div>
 </button>

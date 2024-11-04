@@ -1,5 +1,6 @@
 export function initSidebar() {
     const sidebar = document.querySelector("#drawer-navigation");
+    const sidebarLinks = sidebar.querySelectorAll("a");
     const sidebarToggle = document.querySelector(
         "button[aria-controls='drawer-navigation']",
     );
@@ -9,27 +10,32 @@ export function initSidebar() {
     // helpers
     const hideSidebar = () => {
         sidebar.setAttribute("aria-expanded", "false");
-        sidebar.classList.add("-translate-x-full");
+        sidebarLinks.forEach((link) => {
+            link.classList.add("w-12");
+        });
+        sidebar.classList.add("-translate-x-[calc(100%-4.8rem)]");
+        tham.classList.remove("tham-active");
         thamInner.classList.add("bg-accent-primary");
-        thamInner.classList.remove("bg-accent-secondary");
+        thamInner.classList.remove("bg-text-primary");
+        document.cookie = "sidebar=;SameSite=None;Secure";
     };
 
     const showSidebar = () => {
         sidebar.setAttribute("aria-expanded", "true");
-        sidebar.classList.remove("-translate-x-full");
-        thamInner.classList.add("bg-accent-secondary");
+        sidebarLinks.forEach((link) => {
+            link.classList.remove("w-12");
+        });
+        sidebar.classList.remove("-translate-x-[calc(100%-4.8rem)]");
+        tham.classList.add("tham-active");
+        thamInner.classList.add("bg-text-primary");
         thamInner.classList.remove("bg-accent-primary");
+        document.cookie = "sidebar=expanded;SameSite=None;Secure";
     };
 
     sidebarToggle.addEventListener("click", () => {
         sidebar.getAttribute("aria-expanded") == "true"
             ? hideSidebar()
             : showSidebar();
-    });
-
-    // animate hamburger
-    tham.addEventListener("click", () => {
-        tham.classList.toggle("tham-active");
     });
 }
 
@@ -52,29 +58,29 @@ export function initThemeToggle() {
         themeToggle.classList.add("bg-warning", "translate-x-1");
         themeToggle.classList.remove("bg-info", "translate-x-6");
         themeToggle.innerHTML = lightSvgString;
-        document.documentElement.classList.toggle("dark");
+        document.documentElement.classList.remove("dark");
+        document.cookie = "theme=;SameSite=None;Secure";
     };
 
     const setDarkMode = () => {
         themeToggle.classList.remove("bg-warning", "translate-x-1");
         themeToggle.classList.add("bg-info", "translate-x-6");
         themeToggle.innerHTML = darkSvgString;
-        document.documentElement.classList.toggle("dark");
+        document.documentElement.classList.add("dark");
+        document.cookie = "theme=dark;SameSite=None;Secure";
     };
 
-    const setTheme = (isDarkmode) => {
-        isDarkmode ? setDarkMode() : setLightMode();
-        localStorage.setItem("isDarkmode", isDarkmode);
+    const setTheme = (isDark) => {
+        isDark ? setDarkMode() : setLightMode();
+        localStorage.setItem("isDark", isDark);
     };
 
     // defautl to light mode if not set else set current
-    localStorage.getItem("isDarkmode") === null
-        ? setTheme(false)
-        : setTheme(localStorage.getItem("isDarkmode") === "true");
+    let isDark = localStorage.getItem("isDark");
+    isDark === null ? setTheme(false) : setTheme(isDark === "true");
 
     themeBtn.addEventListener("click", () => {
-        const isDarkmode =
-            localStorage.getItem("isDarkmode") === "true" ? false : true;
-        setTheme(isDarkmode);
+        const isDark = localStorage.getItem("isDark") === "true" ? false : true;
+        setTheme(isDark);
     });
 }

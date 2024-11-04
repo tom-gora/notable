@@ -1,5 +1,7 @@
+@use(App\Helpers\UI)
+
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
+<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ UI::getTheme() }} no-transition">
 
 <head>
     <meta charset="utf-8">
@@ -17,10 +19,8 @@
     @endif
 </head>
 
-<body class="text-text-primary w-full h-full relative font-sans antialiased /50 bg-base-100">
-    <x-inputs.sidebar-toggle />
-    <x-inputs.theme-toggle />
-    <x-navigations.drawer-sidebar />
+<body class="/50 relative h-screen w-screen bg-base-100 py-16 font-sans text-text-primary antialiased">
+    {{ $slot }}
 </body>
 
 </html>

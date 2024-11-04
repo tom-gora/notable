@@ -8,10 +8,10 @@
     --accent-primary-focus: #bd432e;
     --accent-primary-content: #fbefed;
 
-    --accent-secondary: #77af7f;
-    --accent-secondary-subtle: #adcfb2;
-    --accent-secondary-focus: #5f8c66;
-    --accent-secondary-content: #f1f7f2;
+    --accent-secondary: #8590c8;
+    --accent-secondary-subtle: #b6bcde;
+    --accent-secondary-focus: #5d658c;
+    --accent-secondary-content: #f3f4fa;
 
     --neutral: #353129;
     --neutral-subtle: #7c725a;
@@ -35,33 +35,37 @@
 }
 
 :root[class~="dark"] {
-    --accent-primary: #da614c;
-    --accent-primary-subtle: #e9a094;
-    --accent-primary-focus: #bd432e;
-    --accent-primary-content: #fbefed;
-
-    --accent-secondary: #77af7f;
-    --accent-secondary-subtle: #adcfb2;
-    --accent-secondary-focus: #5f8c66;
-    --accent-secondary-content: #f1f7f2;
-
-    --neutral: #353129;
-    --neutral-subtle: #7c725a;
-    --neutral-focus: #2a2721;
-    --neutral-content: #ebeaea;
-
+    /*Only colors that vary for darkk mode*/
     --text-primary: #e7dcbc;
     --text-subtle: #b6ad90;
-
-    --surface: #edd4a6;
-    --surface-strong: #daa84c;
 
     --base-100: #181716;
     --base-200: #0c0c0b;
     --base-300: #020202;
+}
 
-    --info: #478ec7;
-    --success: #009485;
-    --warning: #ff9900;
-    --error: #ff5724;
+.tham:hover,
+.tham:focus-visible,
+.tham:focus {
+    opacity: unset !important;
+}
+
+/*HACK: on firefox weird rendering isssue where one hamburger line renders thinner?
+/*had to do manual magic to fix it. not sure if this is to stay... chromium works all good*/
+@-moz-document url-prefix() {
+    .tham .tham-inner {
+        height: 4px;
+    }
+    .tham.tham-active .tham-inner {
+        height: 3px;
+    }
+}
+
+.no-transition * {
+    -webkit-transition: none !important;
+    -moz-transition: none !important;
+    -ms-transition: none !important;
+    -o-transition: none !important;
+    transition: none !important;
+    transition-delay: 0 !important;
 }
