@@ -2,8 +2,7 @@
 
 namespace App\Helpers;
 
-class UI
-{
+class UI {
     // CONST:
     // links to display in a sidebar menu (using iconify and to define an icon only a string to template in is enough)
     public static array $SIDEBAR_LINKS = [
@@ -16,14 +15,22 @@ class UI
         ['/settings', 'Settings', 'solar--settings-line-duotone'],
     ];
 
+    public static array $TOPBAR_LINKS = [
+        "auth_true" => [
+            ['/profile', 'Profile'],
+        ],
+        "auth_false" => [
+            ['showLogin', 'Login'],
+            ['showRegister', 'Register'],
+        ]
+    ];
+
     // determine if link in menu is to the currently displayed view to set as prop > style and and model behavior conditionally
-    public static function isCurrent(string $link): bool
-    {
+    public static function isCurrent(string $link) : bool {
         return request()->is('/') ? request()->is($link) : request()->is(ltrim($link, '/'));
     }
 
-    public static function getTheme(): string
-    {
+    public static function getTheme() : string {
         if (isset($_COOKIE['theme']) && $_COOKIE['theme'] === 'dark') {
             return 'dark';
         }
@@ -31,12 +38,30 @@ class UI
         return '';
     }
 
-    public static function getSidebarState(): bool
-    {
+    public static function getSidebarState() : bool {
         if (isset($_COOKIE['sidebar']) && $_COOKIE['sidebar'] === 'expanded') {
             return true;
         }
 
         return false;
+    }
+
+    public static function getCurrentTitle() : string {
+        $route = request()->route()->uri;
+        if ($route === '/') {
+            return 'Home';
+        }
+
+        $current = array_filter(UI::$SIDEBAR_LINKS, function ($link) use ($route) {
+            $current = strpos($link[0], $route);
+
+            return $current;
+        });
+        $current = reset($current);
+        if (empty($current)) {
+            return 'Home';
+        }
+        return $current[1];
+
     }
 }

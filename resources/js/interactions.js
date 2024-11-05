@@ -6,9 +6,16 @@ export function initSidebar() {
     );
     const tham = document.querySelector(".tham");
     const thamInner = tham.querySelector(".tham-inner");
+    const slot = document.querySelector("#slot-content");
+    const themeBtn = document.querySelector(
+        'button[aria-label="Toggle theme"]',
+    );
 
     // helpers
     const hideSidebar = () => {
+        themeBtn.classList.remove("md:translate-x-44");
+        themeBtn.classList.remove("translate-x-[calc(100vw-160%)]");
+        slot.classList.remove("pl-64");
         sidebar.setAttribute("aria-expanded", "false");
         sidebarLinks.forEach((link) => {
             link.classList.add("w-12");
@@ -21,6 +28,9 @@ export function initSidebar() {
     };
 
     const showSidebar = () => {
+        themeBtn.classList.add("md:translate-x-44");
+        themeBtn.classList.add("translate-x-[calc(100vw-160%)]");
+        slot.classList.add("pl-64");
         sidebar.setAttribute("aria-expanded", "true");
         sidebarLinks.forEach((link) => {
             link.classList.remove("w-12");

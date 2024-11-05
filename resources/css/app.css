@@ -69,3 +69,16 @@
     transition: none !important;
     transition-delay: 0 !important;
 }
+
+/*dynamic logo clamping*/
+@layer components {
+    .clamped-logo {
+        left: clamp(16rem, 50vw, 50%);
+        transform: translateX(-50%);
+    }
+
+    .sm-fixed-logo {
+        left: calc(100% - 9rem);
+        top: -1rem;
+    }
+}

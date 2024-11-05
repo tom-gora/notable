@@ -1,31 +1,24 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
+use App\Notable as N;
+use Illuminate\Support\Facades\Route as Rt;
 
-Route::get('/', function () {
-    return view('home');
-});
+Rt::get('/', N\Home::class)->name('home');
+Rt::get('/transcripts', N\Transcripts::class)->name('transcripts');
+Rt::get('/archive', N\Archive::class)->name('archive');
+Rt::get('/bookmarks', N\Bookmarks::class)->name('bookmarks');
+Rt::get('/collections', N\Collections::class)->name('collections');
+Rt::get('/settings', N\Settings::class)->name('settings');
+Rt::get('/snapshots', N\Snapshots::class)->name('snapshots');
 
-Route::get('/settings', function () {
-    return view('settings');
-});
 
-Route::get('/archive', function () {
-    return view('archive');
-});
+Rt::view('dashboard', 'dashboard')
+    ->middleware(['auth', 'verified'])
+    ->name('dashboard');
 
-Route::get('/bookmarks', function () {
-    return view('bookmarks');
-});
+/*Rt::view('profile', 'livewire.profile')*/
+Rt::get('/profile', N\Profile::class)->name('profile')
+    ->middleware(['auth'])
+    ->name('profile');
 
-Route::get('/collections', function () {
-    return view('collections');
-});
-
-Route::get('/snapshots', function () {
-    return view('snapshots');
-});
-
-Route::get('/transcripts', function () {
-    return view('transcripts');
-});
+require __DIR__ . '/auth.php';
