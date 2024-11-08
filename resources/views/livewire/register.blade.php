@@ -1,5 +1,5 @@
 <div>
-    <form wire:submit="register">
+    <form class="mx-auto w-fit rounded-xl bg-base-300 p-8" wire:submit="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
