@@ -1,5 +1,5 @@
 <div
-    class="mt-8 flex grow scale-90 flex-col items-end justify-end gap-1 px-2 pt-2 md:mt-0 md:scale-100 md:flex-row md:items-center md:gap-4 md:px-8">
+    class="mt-10 flex grow scale-90 flex-col items-end justify-end gap-2 px-2 pt-2 md:mt-0 md:scale-100 md:flex-row md:items-center md:gap-4 md:px-8">
     @auth
         <x-dropdown align="right" width="48">
             <x-slot name="trigger">

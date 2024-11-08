@@ -49,7 +49,7 @@ export default {
                 error: "var(--error)",
             },
             backgroundImage: {
-                splash01: "url(/public/splash_01.svg)",
+                splash01: "url(/public/splash_no_auth.svg)",
             },
         },
     },

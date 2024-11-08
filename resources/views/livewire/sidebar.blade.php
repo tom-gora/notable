@@ -5,8 +5,17 @@
     <div class="flex h-full flex-col justify-end overflow-y-auto py-4 pt-4">
         <ul class="flex flex-col-reverse gap-2 py-4 font-medium">
             @foreach ($links as $link)
-                <livewire:sidebar-link :title="$link[1]" :href="$link[0]" :offset="$loop->last ? 'pb-8' : ''" :icon="$link[2]"
-                    :current="$this->isCurrent($link[0])" :sidebarState="$sidebarState">
+                {{-- at auth render all links --}}
+                @auth
+                    <livewire:sidebar-link :title="$link[1]" :href="$link[0]" :offset="$loop->last ? 'pb-8' : ''" :icon="$link[2]"
+                        :current="$this->isCurrent($link[0])" :sidebarState="$sidebarState">
+                    @else
+                        {{-- at auth render only home and settings --}}
+                        @if ($link[3])
+                            <livewire:sidebar-link :title="$link[1]" :href="$link[0]" :offset="$loop->last ? 'pb-8' : ''" :icon="$link[2]"
+                                :current="$this->isCurrent($link[0])" :sidebarState="$sidebarState">
+                        @endif
+                    @endauth
             @endforeach
         </ul>
     </div>

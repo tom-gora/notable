@@ -74,7 +74,7 @@
 @layer components {
     .clamped-logo {
         left: clamp(16rem, 50vw, 50%);
-        transform: translateX(-50%);
+        transform: translateX(-47%);
     }
 
     .sm-fixed-logo {

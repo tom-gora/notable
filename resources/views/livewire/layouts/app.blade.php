@@ -18,14 +18,15 @@
     @endif
 </head>
 
-<body class="/50 relative h-screen w-screen bg-base-100 pt-32 font-sans text-text-primary antialiased">
+<body class="/50  relative h-screen w-screen bg-base-100 pt-32 font-sans text-text-primary antialiased">
     @persist('topbar')
         <livewire:theme-toggle />
         <livewire:topbar />
     @endpersist
     <livewire:sidebar-toggle />
     <livewire:sidebar />
-    <main id="slot-content" class=" {{ UI::getSidebarState() ? 'pl-64' : '' }} transition-all duration-300">
+    <main id="slot-content"
+        class=" {{ UI::getSidebarState() ? 'pl-64' : ' ml-10 md:ml-0' }} transition-all duration-300">
         {{ $slot }}
     </main>
 </body>

@@ -6,13 +6,13 @@ class UI {
     // CONST:
     // links to display in a sidebar menu (using iconify and to define an icon only a string to template in is enough)
     public static array $SIDEBAR_LINKS = [
-        ['/', 'Home', 'solar--home-bold-duotone'],
-        ['/transcripts', 'Transcripts', 'hugeicons--quill-write-02'],
-        ['/snapshots', 'Snapshots', 'solar--eye-scan-bold-duotone'],
-        ['/archive', 'Archive', 'solar--inbox-archive-line-duotone'],
-        ['/collections', 'Collections', 'solar--widget-2-line-duotone'],
-        ['/bookmarks', 'Bookmarks', 'solar--notebook-bookmark-bold-duotone'],
-        ['/settings', 'Settings', 'solar--settings-line-duotone'],
+        ['/', 'Home', 'solar--home-bold-duotone', true ],
+        ['/transcripts', 'Transcripts', 'hugeicons--quill-write-02', false ],
+        ['/snapshots', 'Snapshots', 'solar--eye-scan-bold-duotone', false ],
+        ['/archive', 'Archive', 'solar--inbox-archive-line-duotone', false ],
+        ['/collections', 'Collections', 'solar--widget-2-line-duotone', false ],
+        ['/bookmarks', 'Bookmarks', 'solar--notebook-bookmark-bold-duotone', false ],
+        ['/settings', 'Settings', 'solar--settings-line-duotone', true ],
     ];
 
     public static array $TOPBAR_LINKS = [

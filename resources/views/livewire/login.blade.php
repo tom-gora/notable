@@ -2,7 +2,7 @@
     <!-- Session Status -->
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
-    <form class="mx-auto w-fit rounded-xl bg-base-300 p-8" wire:submit="login">
+    <form class="mx-24 mt-[10vh] w-8/12 rounded-xl bg-base-300 p-8 md:mx-auto md:w-fit" wire:submit="login">
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('Email')" />

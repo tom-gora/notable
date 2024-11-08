@@ -1,5 +1,5 @@
 <div>
-    <form class="mx-auto w-fit rounded-xl bg-base-300 p-8" wire:submit="register">
+    <form class="mx-24 mt-[10vh] w-8/12 rounded-xl bg-base-300 p-8 md:mx-auto md:w-fit" wire:submit="register">
         <!-- Name -->
         <div>
             <x-input-label for="name" :value="__('Name')" />
@@ -37,7 +37,7 @@
         </div>
 
         <div class="mt-4 flex items-center justify-end">
-            <a class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
+            <a class="mt-1 rounded-md px-2 py-1 text-sm text-text-subtle hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-secondary"
                 href="{{ route('login') }}" wire:navigate>
                 {{ __('Already registered?') }}
             </a>
