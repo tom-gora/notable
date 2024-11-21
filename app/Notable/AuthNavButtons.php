@@ -9,7 +9,7 @@ class AuthNavButtons extends Component {
     public function logout(Logout $logout) : void {
         $logout();
 
-        $this->redirect('/', navigate: false);
+        $this->redirect('/', navigate: true);
     }
 
     public function render() {

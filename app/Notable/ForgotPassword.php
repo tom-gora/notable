@@ -24,14 +24,14 @@ class ForgotPassword extends Component {
         );
 
         if ($status != Password::RESET_LINK_SENT) {
-            $this->addError('email', __($status));
+            $this->addError('email_error', __($status));
 
             return;
         }
 
         $this->reset('email');
 
-        session()->flash('status', __($status));
+        session()->put('status', __($status));
     }
 
     public function render() {

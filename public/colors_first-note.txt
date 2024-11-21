@@ -1,0 +1,17 @@
+#ffffff;
+#fcfdfd;
+#f8f8f9;
+#eeeeee;
+#fddde8;
+#e3e3e2;
+#d1d1d1;
+#cecdcc;
+#f9a8bf;
+#f9ad95;
+#a5adad;
+#f03658;
+#d82b43;
+#bc283b;
+#365462;
+#1d2a30;
+#000000;

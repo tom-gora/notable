@@ -3,6 +3,8 @@
 namespace App\Notable;
 
 use Illuminate\Auth\Events\PasswordReset;
+use Illuminate\Contracts\View\View;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Password;
 use Illuminate\Support\Facades\Session;
@@ -36,7 +38,6 @@ class ResetPassword extends Component {
             'email' => ['required', 'string', 'email'],
             'password' => ['required', 'string', 'confirmed', Rules\Password::defaults()],
         ]);
-
         // Here we will attempt to reset the user's password. If it is successful we
         // will update the password on an actual user model and persist it to the
         // database. Otherwise we will parse the error and return the response.
@@ -61,12 +62,26 @@ class ResetPassword extends Component {
             return;
         }
 
-        Session::flash('status', __($status));
+        Session::put('status', __($status));
 
         $this->redirectRoute('login', navigate: true);
     }
+    /**
+     * @param mixed $e
+     * @param mixed $stopPropagation
+     */
+    public function exception($e, $stopPropagation) : void {
+        $failed = $e->validator->failed();
+        if (!empty($failed) && Arr::has($failed, "password") && Arr::has($failed, "password.Confirmed")) {
+            $this->addError('pass_error', "Passwords must match.");
+        } elseif (!empty($failed) && Arr::has($failed, "email") && !empty($failed["email"]["Unique"])) {
+            $this->addError('email_error', "Email already taken.");
+        } elseif (!empty($failed) && Arr::has($failed, "email") && Arr::has($failed, "email.Lowercase")) {
+            $this->addError('email_error', "Email must be lowercase.");
+        }
+    }
 
-    public function render() {
+    public function render() : View {
         return view('livewire.reset-password');
     }
 }

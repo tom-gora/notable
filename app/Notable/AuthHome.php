@@ -4,10 +4,10 @@ namespace App\Notable;
 
 use Livewire\Component;
 
-class Bookmarks extends Component
+class AuthHome extends Component
 {
     public function render()
     {
-        return view('livewire.bookmarks');
+        return view('livewire.auth-home');
     }
 }

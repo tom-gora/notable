@@ -123,4 +123,12 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'cloud_vision_api' => [
+        'g_token' => env('G_TOKEN'),
+        'g_app_id' => env('G_APP_ID'),
+    ],
+
+    'gemini_api' => [
+        'g_ai_api_key' => env('G_AI_API_KEY'),
+    ],
 ];

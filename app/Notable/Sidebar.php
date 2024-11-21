@@ -16,6 +16,7 @@ class Sidebar extends Component {
     public function mount() {
         $this->links = UI::$SIDEBAR_LINKS;
         $this->sidebarState = UI::getSidebarState();
+        /*dd($this->sidebarState);*/
     }
 
     public function render() {

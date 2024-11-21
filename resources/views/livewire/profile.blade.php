@@ -6,7 +6,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-5 gap-6">
+        <div class="md:grid md:grid-cols-5 gap-6 flex flex-col">
             <div class="col-span-3 rounded-lg bg-base-200 p-4 md:p-8">
                 <div class="max-w-xl">
                     <livewire:profile.update-password-form />
@@ -15,7 +15,7 @@
 
             <div class="col-span-2 rounded-lg bg-base-200 p-4 md:p-8">
                 <div class="max-w-xl">
-                    <livewire:profile.delete-user-form />
+                    <livewire:delete-user-form />
                 </div>
             </div>
         </div>

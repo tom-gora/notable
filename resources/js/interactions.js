@@ -11,11 +11,24 @@ export function initSidebar() {
         'button[aria-label="Toggle theme"]',
     );
 
+    // vary cookies string based on env b/c Secure and SameSite props are not allowed over http
+    let sidebar0StateCookie;
+    let sidebar1StateCookie;
+
+    if (APP_ENV === "local") {
+        sidebar0StateCookie = "sidebar=;";
+        sidebar1StateCookie = "sidebar=expanded;";
+    } else {
+        sidebar0StateCookie = "sidebar=; SameSite=None; Secure";
+        sidebar1StateCookie = "sidebar=expanded; SameSite=None; Secure";
+    }
+
     // helpers
     const hideSidebar = () => {
         themeBtn.classList.remove("md:translate-x-44");
         themeBtn.classList.remove("translate-x-[calc(100vw-160%)]");
         slot.classList.remove("pl-64");
+        slot.classList.add("pl-16");
         sidebar.setAttribute("aria-expanded", "false");
         sidebarLinks.forEach((link) => {
             link.classList.add("w-12");
@@ -24,13 +37,14 @@ export function initSidebar() {
         tham.classList.remove("tham-active");
         thamInner.classList.add("bg-accent-primary");
         thamInner.classList.remove("bg-text-primary");
-        document.cookie = "sidebar=;SameSite=None;Secure";
+        document.cookie = `${sidebar0StateCookie}`;
     };
 
     const showSidebar = () => {
         themeBtn.classList.add("md:translate-x-44");
         themeBtn.classList.add("translate-x-[calc(100vw-160%)]");
         slot.classList.add("pl-64");
+        slot.classList.remove("pl-16");
         sidebar.setAttribute("aria-expanded", "true");
         sidebarLinks.forEach((link) => {
             link.classList.remove("w-12");
@@ -39,7 +53,7 @@ export function initSidebar() {
         tham.classList.add("tham-active");
         thamInner.classList.add("bg-text-primary");
         thamInner.classList.remove("bg-accent-primary");
-        document.cookie = "sidebar=expanded;SameSite=None;Secure";
+        document.cookie = `${sidebar1StateCookie}`;
     };
 
     sidebarToggle.addEventListener("click", () => {
@@ -63,13 +77,25 @@ export function initThemeToggle() {
 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364 6.364l-.707-.707M6.343 6.343l-.707-.707m12.728 0l-.707.707M6.343 17.657l-.707.707M16 12a4 4 0 11-8 0 4 4 0 018 0z" />
 </svg>`;
 
+    // vary cookies string based on env b/c Secure and SameSite props are not allowed over http
+    let themeLStateCookie;
+    let themeDStateCookie;
+
+    if (APP_ENV === "local") {
+        themeLStateCookie = "theme=;";
+        themeDStateCookie = "theme=dark;";
+    } else {
+        themeLStateCookie = "theme=; SameSite=None; Secure";
+        themeDStateCookie = "theme=dark; SameSite=None; Secure";
+    }
+
     // helpers
     const setLightMode = () => {
         themeToggle.classList.add("bg-warning", "translate-x-1");
         themeToggle.classList.remove("bg-info", "translate-x-6");
         themeToggle.innerHTML = lightSvgString;
         document.documentElement.classList.remove("dark");
-        document.cookie = "theme=;SameSite=None;Secure";
+        document.cookie = `${themeLStateCookie}`;
     };
 
     const setDarkMode = () => {
@@ -77,7 +103,7 @@ export function initThemeToggle() {
         themeToggle.classList.add("bg-info", "translate-x-6");
         themeToggle.innerHTML = darkSvgString;
         document.documentElement.classList.add("dark");
-        document.cookie = "theme=dark;SameSite=None;Secure";
+        document.cookie = `${themeDStateCookie}`;
     };
 
     const setTheme = (isDark) => {

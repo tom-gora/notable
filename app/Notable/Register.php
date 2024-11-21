@@ -4,6 +4,7 @@ namespace App\Notable;
 
 use App\Models\User;
 use Illuminate\Auth\Events\Registered;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
@@ -14,6 +15,7 @@ class Register extends Component {
     public string $email = '';
     public string $password = '';
     public string $password_confirmation = '';
+
 
     /**
      * Handle an incoming registration request.
@@ -31,7 +33,18 @@ class Register extends Component {
 
         Auth::login($user);
 
-        $this->redirect(route('dashboard', absolute: false), navigate: true);
+        $this->redirect(route('home', absolute: false), navigate: false);
+    }
+
+    public function exception($e, $stopPropagation) : void {
+        $failed = $e->validator->failed();
+        if (!empty($failed) && Arr::has($failed, "password") && Arr::has($failed, "password.Confirmed")) {
+            $this->addError('pass_error', "Passwords must match.");
+        } elseif (!empty($failed) && Arr::has($failed, "email") && !empty($failed["email"]["Unique"])) {
+            $this->addError('email_error', "Email already taken.");
+        } elseif (!empty($failed) && Arr::has($failed, "email") && Arr::has($failed, "email.Lowercase")) {
+            $this->addError('email_error', "Email must be lowercase.");
+        }
     }
 
     public function render() {

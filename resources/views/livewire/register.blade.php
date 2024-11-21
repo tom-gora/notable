@@ -1,50 +1,25 @@
-<div>
-    <form class="mx-24 mt-[10vh] w-8/12 rounded-xl bg-base-300 p-8 md:mx-auto md:w-fit" wire:submit="register">
+<div class="h-screen w-screen grid place-items-center pr-4 md:pr-0">
+    <x-mary-form
+        class="w-9/12 ml-8 md:ml-auto -translate-y-1/2 rounded-xl bg-base-300 p-8 mx-auto md:w-fit flex flex-col gap-2"
+        wire:submit="register">
         <!-- Name -->
-        <div>
-            <x-input-label for="name" :value="__('Name')" />
-            <x-text-input wire:model="name" id="name" class="mt-1 block w-full" type="text" name="name" required
-                autofocus autocomplete="name" />
-            <x-input-error :messages="$errors->get('name')" class="mt-2" />
-        </div>
-
+        <x-mary-input wire:model="name" id="name" :label="__('Name')" type="text" error-field="name_error" inline
+            clearable class="base-input" error-class="form-error-custom" required autocomplete="name" />
         <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="email" id="email" class="mt-1 block w-full" type="email" name="email"
-                required autocomplete="username" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
-        </div>
-
+        <x-mary-input wire:model="email" id="email" :label="__('Email')" type="email" error-field="email_error"
+            inline clearable class="base-input" error-class="form-error-custom" required autocomplete="username" />
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="password" id="password" class="mt-1 block w-full" type="password" name="password"
-                required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
-        </div>
-
+        <x-mary-password wire:model="password" id="password" :label="__('Password')" type="password" inline clearable
+            error-field="pass_error" class="base-input" error-class="form-error-custom" required
+            autocomplete="current-password" />
         <!-- Confirm Password -->
-        <div class="mt-4">
-            <x-input-label for="password_confirmation" :value="__('Confirm Password')" />
-
-            <x-text-input wire:model="password_confirmation" id="password_confirmation" class="mt-1 block w-full"
-                type="password" name="password_confirmation" required autocomplete="new-password" />
-
-            <x-input-error :messages="$errors->get('password_confirmation')" class="mt-2" />
-        </div>
-
-        <div class="mt-4 flex items-center justify-end">
-            <a class="mt-1 rounded-md px-2 py-1 text-sm text-text-subtle hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-secondary"
-                href="{{ route('login') }}" wire:navigate>
-                {{ __('Already registered?') }}
-            </a>
-
-            <x-primary-button class="ms-4">
+        <x-mary-password wire:model="password_confirmation" id="password_confirmation" :label="__('Retype Password')" type="password"
+            inline clearable class="base-input" error-class="form-error-custom" required autocomplete="new-password" />
+        <div class="mt-4 flex gap-8 items-center justify-end">
+            <x-anchor-warn href="{{ route('login') }}" content="{{ __('Already registered?') }}" :navigate="true" />
+            <x-mary-button type="submit" class="btn-secondary">
                 {{ __('Register') }}
-            </x-primary-button>
+            </x-mary-button>
         </div>
-    </form>
+    </x-mary-form>
 </div>

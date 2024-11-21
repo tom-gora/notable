@@ -1,7 +1,9 @@
-import defaultTheme from "tailwindcss/defaultTheme";
-const { addIconSelectors } = require("@iconify/tailwind");
+import type { Config } from "tailwindcss";
+import { addIconSelectors } from "@iconify/tailwind";
+import daisyui from "daisyui";
+import twh from "tailwind-hamburgers";
+import typography from "@tailwindcss/typography";
 
-/** @type {import('tailwindcss').Config} */
 export default {
     darkMode: "selector",
     content: [
@@ -11,11 +13,21 @@ export default {
         "./resources/**/*.js",
         "./resources/**/*.css",
         "./resources/**/*.html",
+        "./vendor/robsontenorio/mary/src/View/Components/**/*.php",
     ],
     theme: {
         extend: {
             fontFamily: {
-                sans: ["Poppins", ...defaultTheme.fontFamily.sans],
+                sans: [
+                    "Poppins",
+                    "ui-sans-serif",
+                    "system-ui",
+                    "sans-serif",
+                    "Apple Color Emoji",
+                    "Segoe UI Emoji",
+                    "Segoe UI Symbol",
+                    "Noto Color Emoji",
+                ],
             },
             colors: {
                 "accent-primary": "var(--accent-primary)",
@@ -48,10 +60,30 @@ export default {
                 warning: "var(--warning)",
                 error: "var(--error)",
             },
-            backgroundImage: {
-                splash01: "url(/public/splash_no_auth.svg)",
-            },
         },
+    },
+
+    daisyui: {
+        themes: [
+            {
+                light: {
+                    primary: "#da614c",
+                    secondary: "#8590c8",
+                    warning: "#ff9900",
+                    success: "#009485",
+                    error: "#ff5724",
+                    info: "#478ec7",
+                },
+                dark: {
+                    primary: "#da614c",
+                    secondary: "#8590c8",
+                    warning: "#ff9900",
+                    success: "#009485",
+                    error: "#ff5724",
+                    info: "#478ec7",
+                },
+            },
+        ],
     },
     // safelist icon classes applied dynamically
     safelist: [
@@ -60,12 +92,23 @@ export default {
         "solar--eye-scan-bold-duotone",
         "solar--inbox-archive-line-duotone",
         "solar--widget-2-line-duotone",
-        "solar--notebook-bookmark-bold-duotone",
+        "solar--stars-minimalistic-line-duotone",
         "solar--settings-line-duotone",
+        "group-focus-visible:text-error",
+        "group-focus:text-error",
+        "group-hover:text-error",
+        "group-focus-visible:text-secondary-focus",
+        "group-focus:text-info",
+        "group-hover:text-info",
+        "group-focus-visible:text-neutral-focus",
+        "group-focus:text-surface-strong",
+        "group-hover:text-surface-strong",
+        "peer-focus:!text-accent-primary-focus",
     ],
     plugins: [
         addIconSelectors(["solar", "hugeicons", "bxs"]),
-        require("tailwind-hamburgers"),
-        "prettier-plugin-tailwindcss",
+        daisyui,
+        twh,
+        typography,
     ],
-};
+} satisfies Config;

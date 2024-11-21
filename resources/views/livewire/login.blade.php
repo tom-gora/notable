@@ -1,46 +1,35 @@
-<div>
+<div class="h-screen w-screen grid place-items-center pr-4 md:pr-0">
     <!-- Session Status -->
-    <x-auth-session-status class="mb-4" :status="session('status')" />
+    @if (session()->has('status'))
+        <x-mary-alert icon="o-exclamation-triangle"
+            class="alert-success text-text-primary z-50 !pb-0 w-9/12 md:w-4/12 absolute right-4 md:right-16 translate-x-1/2 text-xs top-32 md:bottom-auto md:top-24 alert-slide-out">
+            {{ session('status') }}
+        </x-mary-alert>
+    @endif
 
-    <form class="mx-24 mt-[10vh] w-8/12 rounded-xl bg-base-300 p-8 md:mx-auto md:w-fit" wire:submit="login">
-        <!-- Email Address -->
-        <div>
-            <x-input-label for="email" :value="__('Email')" />
-            <x-text-input wire:model="form.email" id="email" class="mt-1 block w-full" type="email" name="email"
-                required autofocus autocomplete="username" />
-            <x-input-error :messages="$errors->get('form.email')" class="mt-2" />
+    <x-mary-form
+        class="w-9/12 ml-8 md:ml-auto -translate-y-1/2 rounded-xl bg-base-300 p-8 mx-auto md:w-fit flex flex-col gap-2"
+        wire:submit.prevent="login">
+        <div class="flex flex-col gap-4">
+            <!-- Email -->
+            <x-mary-input wire:model="form.email" id="email" :label="__('Email')" type="email" inline clearable
+                error-field="email_error" class="base-input" error-class="form-error-custom" required autofocus />
+            <!--Password-->
+            <x-mary-password wire:model="form.password" id="password" :label="__('Password')" type="password" inline
+                clearable error-field="pass_error" class="base-input" error-class="form-error-custom" required
+                autocomplete="current-password" />
         </div>
+        <x-mary-checkbox class="base-checkbox mt-4" label="{{ __('Remember me') }}" wire:model="form.remember" right />
 
-        <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('Password')" />
-
-            <x-text-input wire:model="form.password" id="password" class="mt-1 block w-full" type="password"
-                name="password" required autocomplete="current-password" />
-
-            <x-input-error :messages="$errors->get('form.password')" class="mt-2" />
-        </div>
-
-        <!-- Remember Me -->
-        <div class="mt-4 block">
-            <label for="remember" class="inline-flex items-center">
-                <input wire:model="form.remember" id="remember" type="checkbox"
-                    class="rounded border-gray-300 text-indigo-600 shadow-sm focus:ring-indigo-500" name="remember">
-                <span class="ms-2 text-sm text-gray-600">{{ __('Remember me') }}</span>
-            </label>
-        </div>
-
-        <div class="mt-4 flex items-center justify-end">
-            @if (Route::has('password.request'))
-                <a class="rounded-md text-sm text-gray-600 underline hover:text-gray-900 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                    href="{{ route('password.request') }}" wire:navigate>
-                    {{ __('Forgot your password?') }}
-                </a>
+        <div class="mt-4 gap-8 flex items-center justify-end">
+            @if (Route::has('forgot-password'))
+                <x-anchor-warn href="{{ route('forgot-password') }}" content="{{ __('Forgot your password?') }}"
+                    :navigate="true" />
             @endif
 
-            <x-primary-button class="ms-3">
+            <x-mary-button type="submit" class="btn-secondary">
                 {{ __('Log in') }}
-            </x-primary-button>
+            </x-mary-button>
         </div>
-    </form>
+    </x-mary-form>
 </div>
