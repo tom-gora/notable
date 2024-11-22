@@ -35,7 +35,7 @@
     @endif
 </head>
 
-<body class="/50  relative h-screen w-screen bg-base-100 pt-32 font-sans text-text-primary antialiased">
+<body class="/50  relative h-screen w-screen bg-base-100 pt-32 font-sans text-text-primary antialiased overflow-scroll">
     @persist('topbar')
         <livewire:theme-toggle />
     @endpersist

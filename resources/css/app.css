@@ -230,3 +230,61 @@ form div:has(> input[type="text"]) button:focus-visible {
 #editor-wrapper .editor-statusbar {
     @apply text-text-subtle;
 }
+
+/*md editor*/
+.EasyMDEContainer:has(.editor-preview-active) {
+    @apply prose;
+    max-width: unset;
+}
+
+.EasyMDEContainer .CodeMirror-cursor {
+    border-left: 0.25rem solid var(--accent-secondary-subtle);
+}
+
+.EasyMDEContainer .editor-preview-active,
+.EasyMDEContainer .CodeMirror.cm-s-easymde.CodeMirror-wrap {
+    @apply bg-base-100 text-text-primary border-none px-8;
+}
+.EasyMDEContainer .editor-preview-active > *:first-child {
+    @apply mt-2;
+}
+
+.EasyMDEContainer .editor-toolbar {
+    @apply bg-base-300 border-none flex gap-1;
+}
+
+.EasyMDEContainer .editor-toolbar button {
+    @apply rounded-lg;
+}
+
+.EasyMDEContainer .editor-toolbar button.active {
+    @apply bg-accent-secondary-focus border-transparent;
+}
+
+.EasyMDEContainer .editor-toolbar button:hover,
+.EasyMDEContainer .editor-toolbar button:focus,
+.EasyMDEContainer .editor-toolbar button:focus-visible {
+    @apply bg-accent-secondary-subtle border-transparent text-base-100;
+}
+
+.EasyMDEContainer .editor-toolbar .separator {
+    @apply border-accent-secondary-focus;
+}
+
+.EasyMDEContainer .CodeMirror-selected {
+    @apply bg-base-200;
+}
+.EasyMDEContainer .CodeMirror-focused .CodeMirror-selected {
+    @apply !bg-base-300;
+}
+
+.EasyMDEContainer .CodeMirror-line::selection,
+.EasyMDEContainer .CodeMirror-line > span::selection,
+.EasyMDEContainer .CodeMirror-line > span > span::selection {
+    @apply !bg-base-300;
+}
+.EasyMDEContainer .CodeMirror-line::-moz-selection,
+.EasyMDEContainer .CodeMirror-line > span::-moz-selection,
+.EasyMDEContainer .CodeMirror-line > span > span::-moz-selection {
+    @apply !bg-base-300;
+}

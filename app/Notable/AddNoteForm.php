@@ -124,6 +124,7 @@ class AddNoteForm extends Component {
      * @param mixed $e
      */
     public function exception($e, $stopPropagation) : void {
+        dd($e->getMessage());
         // custom errors on validation fail
         $failed = $e->validator->failed();
         if (!empty($failed) && Arr::has($failed, "note_title")) {
@@ -132,6 +133,9 @@ class AddNoteForm extends Component {
             $this->addError('image_error', "Invalid message format or size too large. ");
             // for js to react appropriately on client side
             $this->dispatch('image_error');
+        } else {
+            //default
+            $this->addError('image_error', $e->getMessage());
         }
         $this->tmpCleanup();
     }

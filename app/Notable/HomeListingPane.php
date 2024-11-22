@@ -9,8 +9,12 @@ use Livewire\Component;
 use App\Models\Note;
 use Livewire\Attributes\On;
 
-#[On("note-updated")]
 class HomeListingPane extends Component {
+    #[On("note-updated")]
+    public function recomputeAfterChange() {
+        unset($this->post);
+    }
+
     #[Computed]
     private function notes() : null|Collection {
         $n = Note::all()->where("user_id", auth()->user()->id);

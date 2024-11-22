@@ -25,7 +25,7 @@ return new class () extends Migration {
             $table->text("markdown");
             $table->string("title");
             //foreign
-            $table->integer("user_id")->nullable(false)->unsigned();
+            $table->bigInteger("user_id")->nullable(false)->unsigned();
             $table->foreign("user_id")->references("id")->on("users");
         });
     }

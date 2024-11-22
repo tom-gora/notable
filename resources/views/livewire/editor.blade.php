@@ -1,4 +1,8 @@
 <div class="flex flex-col items-center gap-4 w-full">
+    <div id="notif-wrapper"><x-mary-alert id="note-saved-alert" icon="o-exclamation-triangle"
+            class="alert-success hidden text-text-primary z-50 w-9/12 md:w-4/12 absolute right-4 md:right-16 translate-x-1/2 text-xs top-32 md:bottom-auto md:top-24 alert-slide-out-short">
+            The note was saved successfully.
+        </x-mary-alert></div>
 
     <div id="editor-wrapper" class="flex flex-col items-center gap-4 w-full">
         <x-mary-markdown wire:model="markdown" :config="$this->getMdeConfig()" label=" '{{ $title }}'" />
@@ -11,9 +15,10 @@
 
     @script
         <script>
+            const templateAlert = document.querySelector("#note-saved-alert");
+            templateAlert.classList.add("hidden");
             const notifWrapper = document.querySelector("#notif-wrapper");
             const saveBtn = document.querySelector("#save-btn");
-
             const editorTitle = document.querySelector("#editor-wrapper label");
             const prependedSpan = document.createElement("span");
             prependedSpan.innerText = "Editing note";
@@ -22,17 +27,16 @@
 
             let baseAlert, currentAlert, nextAlert;
             const initAlerts = () => {
-                const templateAlert = document.querySelector("#note-saved-alert");
                 //HACK:
                 // on init hide this node using js for class injection
                 // b/c for some reason it fails if I hardcode it in markup (?)
-                templateAlert.classList.add("hidden");
                 // prep a next as a copy already hidden and store for now in the runtime only
                 baseAlert = templateAlert.cloneNode(true);
                 // remove the initial one. Effectively it was just a markup template to get content shown
                 templateAlert.remove();
                 notifWrapper.appendChild(baseAlert);
             }
+            initAlerts();
 
             const cycleAlerts = () => {
                 // if any lingering alert or user clicks like crazy remove what is marked to remove
@@ -69,12 +73,10 @@
 
             // when server confirmed saving fire up the func
             $wire.on("note-saved", (e) => {
-                if (e.showAlert === true) {
+                if (e.showAlert) {
                     cycleAlerts();
                 }
             });
-
-            initAlerts();
         </script>
     @endscript
 </div>

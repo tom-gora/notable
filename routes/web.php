@@ -15,16 +15,17 @@ Rt::get('/collections', N\Collections::class)->name('collections');
 Rt::get('/settings', N\Settings::class)->name('settings');
 Rt::get('/snapshots', N\Snapshots::class)->name('snapshots');
 
-Rt::post('/api/internal/rendered', function (Request $r) {
-    sleep(0.5);
-    $n = Note::find($r->getContent());
-    return Str::of($n->markdown)->markdown();
-})->middleware(['auth']);
-
-
 /*Rt::view('profile', 'livewire.profile')*/
 Rt::get('/profile', N\Profile::class)->name('profile')
     ->middleware(['auth'])
     ->name('profile');
+
+
+Rt::post('/api/internal/rendered', function (Request $r) {
+    // sleep to give the user a chance to see the spinner and be confident a work is being done
+    sleep(0.5);
+    $n = Note::find($r->getContent());
+    return Str::of($n->markdown)->markdown();
+})->middleware(['auth']);
 
 require __DIR__ . '/auth.php';

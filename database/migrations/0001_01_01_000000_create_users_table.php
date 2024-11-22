@@ -10,7 +10,7 @@ return new class () extends Migration {
      */
     public function up() : void {
         Schema::create('users', function (Blueprint $table) {
-            $table->bigIncrements("id")->unique(true);
+            $table->bigIncrements("id")->unique(true)->unsigned();
             $table->string('name');
             $table->string('email')->unique(true);
             $table->timestamp('email_verified_at')->nullable();

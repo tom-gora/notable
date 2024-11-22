@@ -1,7 +1,7 @@
 <div
-    class="relative z-50 mt-10 flex grow scale-90 flex-col items-end justify-end gap-2 px-2 pt-2 md:mt-0 md:scale-100 md:flex-row md:items-center md:gap-4 md:px-8">
+    class="relative z-50 flex scale-90 flex-col items-end justify-end gap-2 px-2 pt-2 md:mt-0 md:scale-100 md:flex-row md:items-center md:gap-4 md:px-8">
     @auth
-        <x-dropdown align="right" width="48" class="transform-y-2">
+        <x-dropdown align="right" width="48" class="!-transform-y-2">
             <x-slot name="trigger">
                 <x-mary-button class="btn-secondary">
                     <div x-data="{{ json_encode(['name' => auth()->user()->name]) }}" x-text="name" x-on:profile-updated.window="name = $event.detail.name">
@@ -33,10 +33,6 @@
     @else
         <div class="translate-y-2 flex gap-4"><x-mary-button link="{{ route('login') }}" class="btn-secondary w-24"
                 wire:navigate.hover label="Log in" />
-            <!--<a href="{{ route('login') }}" wire:navigate.hover-->
-            <!--    class="w-24 rounded-lg bg-base-200 px-4 py-2 text-center text-text-primary transition duration-150 hover:bg-accent-secondary md:bg-none">-->
-            <!--    Log in-->
-            <!--</a>-->
 
             @if (Route::has('register'))
                 <x-mary-button link="{{ route('register') }}" class="btn-secondary w-24" wire:navigate.hover
