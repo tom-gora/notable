@@ -4,6 +4,7 @@ namespace App\Notable;
 
 use App\Models\Note;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\On;
 use Livewire\Component;
 
 class Editor extends Component {
@@ -38,6 +39,12 @@ class Editor extends Component {
 
     public function getMdeConfig() : array {
         return $this->mde_config;
+    }
+
+    #[On("edit-note")]
+    public function setNoteId($note_id) : void {
+        $this->edited_id = $note_id;
+        $this->initNote();
     }
 
 

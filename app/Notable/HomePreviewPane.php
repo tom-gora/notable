@@ -13,25 +13,27 @@ class HomePreviewPane extends Component {
 
     public bool $notify = false;
 
-    public string $test_string = 'test';
     public ?int $triggered_id = null;
 
     public function showAddNoteForm() : void {
         $this->isForm = true;
+        $this->isEditor = false;
+        $this->isPreview = false;
     }
-    /**
-     * @param int $note_id
-     */
+
     #[On("edit-note")]
     public function showNoteEditor($note_id) : void {
+        $this->notify = false;
+        $this->triggered_id = $note_id;
         $this->isPreview = false;
         $this->isForm = false;
         $this->isEditor = true;
-        $this->triggered_id = $note_id;
     }
 
     #[On("toggle-preview")]
-    public function showPreviewPane() : void {
+    public function showPreviewPane($note_id) : void {
+        $this->notify = false;
+        $this->triggered_id = $note_id;
         $this->isForm = false;
         $this->isEditor = false;
         $this->isPreview = true;
@@ -39,6 +41,7 @@ class HomePreviewPane extends Component {
 
     #[On("form-go-back")]
     public function goBack() : void {
+        $this->notify = false;
         $this->isEditor = false;
         $this->isPreview = false;
         $this->isForm = false;
@@ -46,6 +49,7 @@ class HomePreviewPane extends Component {
 
     #[On("close-editor")]
     public function noteUpdated() : void {
+        $this->notify = false;
         $this->isPreview = false;
         $this->isForm = false;
         $this->isEditor = false;
@@ -53,6 +57,7 @@ class HomePreviewPane extends Component {
 
     #[On("close-preview")]
     public function closePreview() : void {
+        $this->notify = false;
         $this->isPreview = false;
         $this->isForm = false;
         $this->isEditor = false;

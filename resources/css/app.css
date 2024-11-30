@@ -232,6 +232,14 @@ form div:has(> input[type="text"]) button:focus-visible {
 }
 
 /*md editor*/
+#editor-wrapper label {
+    @apply pt-8 relative font-normal italic;
+    &::after {
+        content: "Editing note:";
+        @apply absolute top-0 text-text-primary text-xl font-bold not-italic;
+    }
+}
+
 .EasyMDEContainer:has(.editor-preview-active) {
     @apply prose;
     max-width: unset;
@@ -287,4 +295,19 @@ form div:has(> input[type="text"]) button:focus-visible {
 .EasyMDEContainer .CodeMirror-line > span::-moz-selection,
 .EasyMDEContainer .CodeMirror-line > span > span::-moz-selection {
     @apply !bg-base-300;
+}
+
+/*pagination */
+#notes-pagination nav p,
+#notes-pagination nav a,
+#notes-pagination nav button,
+#notes-pagination nav span {
+    @apply text-sm !text-text-subtle bg-base-300 overflow-hidden border-none border-2 focus:border-none focus-visible:border-none focus:!text-accent-secondary-focus focus:font-bold focus-visible:!text-accent-secondary-focus focus-visible:font-bold;
+    &[class*="cursor-default"] {
+        @apply !text-text-subtle opacity-30;
+    }
+}
+
+#notes-pagination nav p.leading-5 {
+    @apply hidden;
 }

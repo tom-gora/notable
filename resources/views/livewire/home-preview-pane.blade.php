@@ -11,27 +11,29 @@
             </x-mary-alert></div>
         <livewire:editor :edited_id="$triggered_id" />
     @else
-        <x-mary-button class="btn-primary" wire:click="showAddNoteForm">Add a note</x-mary-button>
+        <x-mary-button class="btn-primary" wire:click.prevent="showAddNoteForm">Add a note</x-mary-button>
         <x-auth-svg-01 />
     @endif
 
     {{-- HACK: REGARDING JS BELOW. Had to put comment here because blade was freaking out and crashing
     trying to parse JS comments in JS block that happen to contain some special chars.
     Yup. Templating language for the templating language. Amazing.... :/
-    pass data via two-step event. first toggle the preview pane state and here
-                 start observing to actively actually wait for dom state to be changed by @if directive
-                 and ONLY after #html-target has been detected in dom send next stage event from here to
-                 trigger note retrieval and processing on the server that eventually updates state and
-                 shows the note. Damn this crap been a nightmare to hack around XD --}}
+    handle previewing via two-step process. first toggle the preview pane state and here
+    start observing to actively actually wait for dom state to be changed by @if directive
+    and ONLY after #html-target has been detected in dom send next stage event from here to
+    trigger note retrieval and processing on the server that eventually updates state and
+    shows the note. Damn this crap been a nightmare to hack around XD --}}
 
     <script>
-        document.addEventListener('livewire:initialized', () => {
+        document.addEventListener('livewire:init', () => {
             const previewPane = document.querySelector("#notable-preview-pane");
             const listPane = document.querySelector("#notable-listing-pane");
             const parser = new DOMParser();
 
-            Livewire.on("edit-note", (e) => {
-                listPane.classList.add("!w-0", "!p-0");
+            Livewire.on("edit-note", () => {
+                console.log(listPane);
+                listPane.classList.remove("w-full", "p-4");
+                listPane.classList.add("w-0", "p-0");
             });
 
             Livewire.on("toggle-preview", (e) => {
@@ -41,7 +43,7 @@
                         if (mutation.type === 'childList') {
                             const htmlTarget = document.querySelector("#html-target");
                             if (htmlTarget !== null) {
-                                fetch(`/api/internal/rendered`, {
+                                fetch('/api/internal/md', {
                                         method: 'POST',
                                         headers: {
                                             'Content-Type': 'application/text',

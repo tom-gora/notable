@@ -1,11 +1,11 @@
-<div class="flex flex-col items-center gap-4 w-full">
+<div class="flex flex-col items-center gap-4 max-h-[75vh] overflow-scroll scroll-smooth">
     <div id="notif-wrapper"><x-mary-alert id="note-saved-alert" icon="o-exclamation-triangle"
             class="alert-success hidden text-text-primary z-50 w-9/12 md:w-4/12 absolute right-4 md:right-16 translate-x-1/2 text-xs top-32 md:bottom-auto md:top-24 alert-slide-out-short">
             The note was saved successfully.
         </x-mary-alert></div>
 
     <div id="editor-wrapper" class="flex flex-col items-center gap-4 w-full">
-        <x-mary-markdown wire:model="markdown" :config="$this->getMdeConfig()" label=" '{{ $title }}'" />
+        <x-mary-markdown wire:model="markdown" :config="$this->getMdeConfig()" label='"{!! $title !!}"' />
     </div>
     <div class="flex gap-8 justify-end w-full px-8">
         <x-mary-button id="save-btn" wire:click="save(true)" label="Save note" class="btn-secondary w-fit"
@@ -19,11 +19,6 @@
             templateAlert.classList.add("hidden");
             const notifWrapper = document.querySelector("#notif-wrapper");
             const saveBtn = document.querySelector("#save-btn");
-            const editorTitle = document.querySelector("#editor-wrapper label");
-            const prependedSpan = document.createElement("span");
-            prependedSpan.innerText = "Editing note";
-            prependedSpan.classList.add("text-text-primary");
-            editorTitle.prepend(prependedSpan);
 
             let baseAlert, currentAlert, nextAlert;
             const initAlerts = () => {
@@ -73,7 +68,7 @@
 
             // when server confirmed saving fire up the func
             $wire.on("note-saved", (e) => {
-                if (e.showAlert) {
+                if (e.showAlert === true) {
                     cycleAlerts();
                 }
             });

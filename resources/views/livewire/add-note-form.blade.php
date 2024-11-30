@@ -5,7 +5,7 @@
     </div>
     <x-mary-header size="text-sm" class="forced-text-center forced-text-color !mb-4 border-b border-b-text-subtle"
         title="Click to upload an image or a scan of a note:" />
-    <x-mary-form id="image-uploader" wire:submit="processNote"
+    <x-mary-form id="image-uploader" wire:submit.prevent="processNote"
         class="w-10/12 h-full flex flex-col justify-center items-center">
         <x-mary-file wire:model="note_image" accept="image/png, image/jpeg, image/jpg, image/webp"
             class="flex flex-col items-center justify-center m-2" crop-after-change error-class="form-error-custom"
@@ -17,7 +17,7 @@
         <div class="flex gap-8 justify-center w-full border-t-text-subtle border-t pt-4">
             <x-mary-button wire:click.prevent="createNote" class="btn-secondary" label="Save Note" type="submit"
                 spinner="createNote" />
-            <x-mary-button wire:click="goBack" class="btn-primary" label="Go Back" />
+            <x-mary-button wire:click.prevent="goBack" class="btn-primary" label="Go Back" />
         </div>
     </x-mary-form>
 </div>
