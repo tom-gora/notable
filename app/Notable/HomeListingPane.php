@@ -3,6 +3,7 @@
 namespace App\Notable;
 
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Computed;
 use Livewire\Component;
 use App\Models\Note;
 use Livewire\Attributes\On;
@@ -14,6 +15,8 @@ class HomeListingPane extends Component {
 
     public string $filter = "";
     public ?string $group = null;
+    public bool $open;
+
 
     public function toggle(string $group) {
         $this->group = $this->group === $group ? null : $group;
@@ -50,10 +53,11 @@ class HomeListingPane extends Component {
     }
 
 
-    public function getNotes() : mixed {
+    #[Computed]
+    public function notes() : mixed {
         // fetch with query builder
         if ($this->filter === "") {
-            return Note::where("user_id", auth()->user()->id)->paginate(3);
+            return Note::where("user_id", auth()->user()->id)->paginate(5);
         } elseif (strlen($this->filter) > 0) {
             return  Note::where("user_id", auth()->user()->id)
                 ->where(function ($query) {
@@ -66,7 +70,6 @@ class HomeListingPane extends Component {
 
     public function render() : View {
         return view('livewire.home-listing-pane', [
-            'notes' => $this->getNotes()
         ]);
     }
 

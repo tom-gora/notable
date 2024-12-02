@@ -124,6 +124,48 @@
     :root[class~="dark"] .btn {
         @apply text-text-primary;
     }
+
+    /*holy fuck this is the best css I've ever written I love it!*/
+    button[class*="accordion-btn"] {
+        --tooltip-offset: 72%;
+        @apply shadow-none p-0 m-0 h-min z-10 bg-transparent outline-0 border-0 focus:ring-0;
+        span {
+            @apply text-2xl mx-2 origin-center m-0 p-0;
+        }
+        &::before {
+            @apply bg-base-100 shadow-base-300 dark:shadow-none shadow-sm text-text-subtle text-xs delay-300 font-normal;
+        }
+        &::after {
+            display: none;
+        }
+    }
+
+    button[class*="accordion-btn"]:hover,
+    button[class*="accordion-btn"]:focus-visible,
+    button[class*="accordion-btn"]:focus {
+        scale: 1.1;
+        &[class*="view"] span {
+            @apply text-surface-strong;
+        }
+        &[class*="delete"] span {
+            @apply text-error;
+        }
+        &[class*="edit"] span {
+            @apply text-info;
+        }
+    }
+
+    button[class*="accordion-btn"][class*="view"] span {
+        @apply text-surface;
+    }
+
+    button[class*="accordion-btn"][class*="delete"] span {
+        @apply text-accent-primary;
+    }
+
+    button[class*="accordion-btn"][class*="edit"] span {
+        @apply text-accent-secondary-focus;
+    }
 }
 
 /*inputs adjustments*/
@@ -219,6 +261,10 @@ form div:has(> input[type="text"]) button:focus-visible {
         both;
     animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
     animation-delay: 2000ms;
+}
+
+#notable-preview-pane > *:not(button) {
+    @apply w-full;
 }
 
 #editor-wrapper label:first-of-type {
