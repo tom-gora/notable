@@ -104,9 +104,11 @@ export default {
         "group-focus:text-surface-strong",
         "group-hover:text-surface-strong",
         "peer-focus:!text-accent-primary-focus",
+        "!w-0",
+        "!p-0",
     ],
     plugins: [
-        addIconSelectors(["solar", "hugeicons", "bxs"]),
+        addIconSelectors(["solar", "hugeicons", "bxs", "stash"]),
         daisyui,
         twh,
         typography,

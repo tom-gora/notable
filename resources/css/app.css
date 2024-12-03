@@ -5,7 +5,7 @@
 :root {
     --accent-primary: #da614c;
     --accent-primary-subtle: #e9a094;
-    --accent-primary-focus: #bd432e;
+    --accent-primary-focus: #973625;
     --accent-primary-content: #fbefed;
 
     --accent-secondary: #8590c8;
@@ -127,13 +127,13 @@
 
     /*holy fuck this is the best css I've ever written I love it!*/
     button[class*="accordion-btn"] {
-        --tooltip-offset: 72%;
+        --tooltip-offset: 77%;
         @apply shadow-none p-0 m-0 h-min z-10 bg-transparent outline-0 border-0 focus:ring-0;
         span {
             @apply text-2xl mx-2 origin-center m-0 p-0;
         }
         &::before {
-            @apply bg-base-100 shadow-base-300 dark:shadow-none shadow-sm text-text-subtle text-xs delay-300 font-normal;
+            @apply bg-base-100 shadow-base-300 dark:shadow-none shadow-sm text-text-subtle text-[0.75rem] py-0 delay-300 font-normal;
         }
         &::after {
             display: none;
@@ -150,8 +150,19 @@
         &[class*="delete"] span {
             @apply text-error;
         }
-        &[class*="edit"] span {
+        &[class*="edit"] span,
+        &[class*="fav"] span,
+        &[class*="collection"] span,
+        &[class*="archive"] span {
             @apply text-info;
+        }
+        &[class*="inactive"] {
+            scale: unset !important;
+            pointer-events: none !important;
+            cursor: move !important;
+            &::before {
+                display: none !important;
+            }
         }
     }
 
@@ -163,8 +174,15 @@
         @apply text-accent-primary;
     }
 
-    button[class*="accordion-btn"][class*="edit"] span {
+    button[class*="accordion-btn"][class*="edit"] span,
+    button[class*="accordion-btn"][class*="fav"] span,
+    button[class*="accordion-btn"][class*="archive"] span,
+    button[class*="accordion-btn"][class*="collection"] span {
         @apply text-accent-secondary-focus;
+    }
+
+    button[class*="accordion-btn"][class*="inactive"] span {
+        @apply text-neutral delay-0;
     }
 }
 
@@ -279,10 +297,10 @@ form div:has(> input[type="text"]) button:focus-visible {
 
 /*md editor*/
 #editor-wrapper label {
-    @apply pt-8 relative font-normal italic;
+    @apply pt-8 relative font-normal w-1/2;
     &::after {
         content: "Editing note:";
-        @apply absolute top-0 text-text-primary text-xl font-bold not-italic;
+        @apply absolute top-0 text-text-primary text-xl font-bold;
     }
 }
 
@@ -356,4 +374,8 @@ form div:has(> input[type="text"]) button:focus-visible {
 
 #notes-pagination nav p.leading-5 {
     @apply hidden;
+}
+
+.collapse-title::after {
+    @apply -mt-[0.35rem];
 }

@@ -9,14 +9,26 @@ use App\Models\Note;
 use Livewire\Attributes\On;
 use Livewire\WithPagination;
 
-#[On("note-updated")]
+#[On("note-updated"), On("editor-closed"), On("note-deleted")]
 class HomeListingPane extends Component {
     use WithPagination;
 
     public string $filter = "";
     public ?string $group = null;
-    public bool $open;
+    public ?int $viewed = null;
+    public ?int $edited = null;
 
+    #[On("preview-closed")]
+    public function unsetViewed() : void {
+        $this->viewed = null;
+    }
+
+    #[On("editor-closed")]
+    public function unsetEdited() : void {
+        $this->group = null;
+        $this->edited = null;
+        $this->viewed = null;
+    }
 
     public function toggle(string $group) {
         $this->group = $this->group === $group ? null : $group;
@@ -40,32 +52,34 @@ class HomeListingPane extends Component {
         if ($deleted) {
             //TODO: needs separate event for deletion to handle ui state reset differently
             $this->dispatch("note-updated");
+            $this->dispatch("note-deleted");
+            $this->edited = null;
+            $this->viewed = null;
         }
     }
 
     public function editNote($id) : void {
         $this->dispatch("edit-note", note_id: $id);
+        $this->edited = $id;
+        $this->viewed = null;
     }
 
 
     public function viewNote($id) : void {
         $this->dispatch("toggle-preview", note_id: $id);
+        $this->viewed = $id;
+        $this->edited = null;
     }
 
 
     #[Computed]
     public function notes() : mixed {
-        // fetch with query builder
-        if ($this->filter === "") {
-            return Note::where("user_id", auth()->user()->id)->paginate(5);
-        } elseif (strlen($this->filter) > 0) {
-            return  Note::where("user_id", auth()->user()->id)
-                ->where(function ($query) {
-                    $query->where("title", "like", "%" . $this->filter . "%")
-                          ->orWhere("markdown", "like", "%" . $this->filter . "%");
-                })->get();
-
-        } return null;
+        // simplified using relationships at last
+        $query = auth()->user()->notes();
+        if ($this->filter !== "") {
+            $query->where(function ($query) { $query->where("title", "like", "%" . $this->filter . "%") ->orWhere("markdown", "like", "%" . $this->filter . "%"); });
+        } $results = $query->paginate(5);
+        return $results->isEmpty() ? null : $results;
     }
 
     public function render() : View {

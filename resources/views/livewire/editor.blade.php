@@ -1,16 +1,15 @@
-<div class="flex flex-col items-center gap-4 max-h-[75vh] overflow-scroll scroll-smooth">
+<div class="flex flex-col items-center gap-4 max-h-[75vh] overflow-scroll scroll-smooth relative pb-4 px-36">
     <div id="notif-wrapper"><x-mary-alert id="note-saved-alert" icon="o-exclamation-triangle"
             class="alert-success hidden text-text-primary z-50 w-9/12 md:w-4/12 absolute right-4 md:right-16 translate-x-1/2 text-xs top-32 md:bottom-auto md:top-24 alert-slide-out-short">
             The note was saved successfully.
         </x-mary-alert></div>
 
-    <div id="editor-wrapper" class="flex flex-col items-center gap-4 w-full">
-        <x-mary-markdown wire:model="markdown" :config="$this->getMdeConfig()" label='"{!! $title !!}"' />
+    <div class="flex flex-col gap-4 ms-auto w-fit px-8 sticky top-4 right-0 z-50  translate-x-32">
+        <x-mary-button id="save-btn" wire:click="save(true)" label="Save" class="btn-secondary w-full" spinner="save" />
+        <x-mary-button wire:click="closeEditor" label="Close" class="btn-primary w-full" spinner="closeEditor" />
     </div>
-    <div class="flex gap-8 justify-end w-full px-8">
-        <x-mary-button id="save-btn" wire:click="save(true)" label="Save note" class="btn-secondary w-fit"
-            spinner="save" />
-        <x-mary-button wire:click="closeEditor" label="Close" class="btn-primary w-fit" spinner="closeEditor" />
+    <div id="editor-wrapper" class="flex w-full flex-col items-center gap-4 -translate-y-24">
+        <x-mary-markdown wire:model="markdown" :config="$this->getMdeConfig()" label='"{!! $title !!}"' />
     </div>
 
     @script

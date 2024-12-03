@@ -49,14 +49,23 @@ class HomePreviewPane extends Component {
 
     #[On("close-editor")]
     public function noteUpdated() : void {
+        $this->dispatch("editor-closed");
         $this->notify = false;
         $this->isPreview = false;
         $this->isForm = false;
         $this->isEditor = false;
     }
 
-    #[On("close-preview")]
+    #[On("close-preview"), On("note-deleted")]
     public function closePreview() : void {
+        if ($this->isPreview) {
+            $this->dispatch("preview-closed");
+        }
+
+        if ($this->isEditor) {
+            $this->dispatch("editor-closed");
+        }
+
         $this->notify = false;
         $this->isPreview = false;
         $this->isForm = false;
