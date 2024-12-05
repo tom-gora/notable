@@ -4,6 +4,7 @@ namespace App\Notable\Core;
 
 use App\Models\Note;
 use Illuminate\Contracts\View\View;
+use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
 use Livewire\Component;
 use Livewire\WithPagination;
@@ -77,24 +78,24 @@ class HomeListingPane extends Component {
         $this->edited = null;
     }
 
-    public function getNotes() : mixed {
-        // simplified using relationships at last
+    #[Computed]
+    public function notes() : ?object {
+        // query based off model relationship now
         $query = auth()->user()->notes();
-
-        if ($this->filter !== '') {
-            $query->where(
-                function ($query) {
-                    $query
-                        ->where('title', 'like', '%' . $this->filter . '%')
-                        ->orWhere('markdown', 'like', '%' . $this->filter . '%');
-                }
-            );
+        /*filtering logic*/
+        if ($this->filter === '') {
+            return $query->paginate(5);
+        } elseif (strlen($this->filter) > 0) {
+            return $query->where(function ($query) {
+                $query->where('title', 'like', '%' . $this->filter . '%')
+                    ->orWhere('markdown', 'like', '%' . $this->filter . '%');
+            })->get();
         }
-        $results = $query->paginate(5);
-        return $results->isEmpty() ? null : $results;
+        //no filter and no notes added yet. will conditionally cause placeholder to render
+        return null;
     }
 
     public function render() : View {
-        return view('livewire.core.home-listing-pane', ['notes' => $this->getNotes()]);
+        return view('livewire.core.home-listing-pane');
     }
 }

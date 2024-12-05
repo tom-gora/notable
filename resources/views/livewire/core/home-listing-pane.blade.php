@@ -1,7 +1,8 @@
 <div class="{{ $this->edited === null ? 'h-fit w-full p-4' : '!h-0 !w-0 !p-0' }} bg-base-200 relative h-fit overflow-hidden rounded-xl transition-all duration-150 md:w-2/3"
     id="notable-listing-pane">
+
     {{-- notes list accordion --}}
-    @if ($notes === null)
+    @if ($this->notes === null)
         <x-no-notes />
     @else
         <div class="w-full pb-4">
@@ -10,7 +11,7 @@
         </div>
         <div class="max-h-[60vh] overflow-scroll scroll-smooth" id="notes-accordion-wrapper">
             <x-mary-accordion wire:model="group">
-                @foreach ($notes as $note)
+                @foreach ($this->notes as $note)
                     <x-mary-collapse :name="'group_' . $note->id" :open="$group === 'group_' . $note->id" :wire:key="'group_' . $note->id"
                         class="odd:bg-base-300 border-0 !pt-4">
                         <x-slot:heading :wire:click.prevent="'toggle(' . $note->id . ')'"
@@ -71,7 +72,7 @@
             </x-mary-accordion>
         </div>
         @if ($filter === '')
-            <div class="px-8 pt-4" id="notes-pagination">{{ $notes->links() }}</div>
+            <div class="px-8 pt-4" id="notes-pagination">{{ $this->notes->links() }}</div>
         @endif
         <script>
             // TODO: also undo any previously toggled labels back to original state when new one is toggled
