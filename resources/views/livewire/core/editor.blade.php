@@ -1,6 +1,6 @@
 <div class="relative flex max-h-[75vh] flex-col items-center gap-4 overflow-scroll scroll-smooth px-36 pb-4">
     <div id="notif-wrapper"><x-mary-alert
-            class="alert-success text-text-primary alert-slide-out-short absolute right-4 top-32 z-50 hidden w-9/12 translate-x-1/2 text-xs md:bottom-auto md:right-16 md:top-24 md:w-4/12"
+            class="alert-success text-text-primary animate-slide-out-short absolute right-4 top-32 z-50 hidden w-9/12 translate-x-1/2 text-xs md:bottom-auto md:right-16 md:top-24 md:w-4/12"
             icon="o-exclamation-triangle" id="note-saved-alert">
             {{ __('The note was saved successfully.') }}
         </x-mary-alert></div>
@@ -50,7 +50,7 @@
 
                 // start its slide out animation
                 requestAnimationFrame(() => {
-                    currentAlert.classList.add("alert-slide-out-short");
+                    currentAlert.classList.add("animate-slide-out-short");
                 });
 
                 // Insert the new alert and clean up the old one
@@ -75,4 +75,5 @@
             });
         </script>
     @endscript
+
 </div>

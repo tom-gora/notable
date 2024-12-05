@@ -2,7 +2,7 @@
     <!-- Session Status -->
     @if (session()->has('status'))
         <x-mary-alert
-            class="alert-success text-text-primary alert-slide-out absolute right-4 top-32 z-50 w-9/12 translate-x-1/2 !pb-0 text-xs md:bottom-auto md:right-16 md:top-24 md:w-4/12"
+            class="alert-success text-text-primary animate-slide-out absolute right-4 top-32 z-50 w-9/12 translate-x-1/2 !pb-0 text-xs md:bottom-auto md:right-16 md:top-24 md:w-4/12"
             icon="o-exclamation-triangle">
             {{ session('status') }}
         </x-mary-alert>
