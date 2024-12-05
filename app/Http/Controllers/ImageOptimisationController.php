@@ -2,17 +2,23 @@
 
 namespace App\Http\Controllers;
 
-use Intervention\Image\ImageManager;
+use Illuminate\Foundation\Exceptions\Renderer\Exception;
+use Illuminate\Routing\Controller;
 use Intervention\Image\Drivers\Imagick\Driver;
+use Intervention\Image\ImageManager;
 
 class ImageOptimisationController extends Controller {
+    /**
+     * @param  mixed  $image_path
+     * @param  mixed  $filename
+     */
     public function resize($image_path, $filename) : string {
-        $e = pathinfo($filename)["extension"];
+        $e = pathinfo($filename)['extension'];
         // make my own randomized name because default looooong strings from Storage facade are pissing me off
-        $n = hash("adler32", pathinfo($filename)["filename"]);
-        $destination = storage_path('app/public/note_images/' . time() . "_" . $n . "." . $e);
+        $n = hash('adler32', pathinfo($filename)['filename']);
+        $destination = storage_path('app/public/note_images/' . time() . '_' . $n . '.' . $e);
 
-        $mgr = new ImageManager(new Driver());
+        $mgr = new ImageManager(new Driver);
 
         $img = $mgr::imagick()->read($image_path);
 

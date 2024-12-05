@@ -10,6 +10,7 @@ export function initSidebar() {
     const themeBtn = document.querySelector(
         'button[aria-label="Toggle theme"]',
     );
+    const topbar = document.querySelector("#secondary-nav");
 
     // vary cookies string based on env b/c Secure and SameSite props are not allowed over http
     let sidebar0StateCookie;
@@ -37,6 +38,8 @@ export function initSidebar() {
         tham.classList.remove("tham-active");
         thamInner.classList.add("bg-accent-primary");
         thamInner.classList.remove("bg-text-primary");
+        topbar.classList.add("pl-32");
+        topbar.classList.remove("pl-80");
         document.cookie = `${sidebar0StateCookie}`;
     };
 
@@ -53,6 +56,8 @@ export function initSidebar() {
         tham.classList.add("tham-active");
         thamInner.classList.add("bg-text-primary");
         thamInner.classList.remove("bg-accent-primary");
+        topbar.classList.remove("pl-32");
+        topbar.classList.add("pl-80");
         document.cookie = `${sidebar1StateCookie}`;
     };
 

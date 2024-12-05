@@ -6,23 +6,23 @@ class UI {
     // CONST:
     // links to display in a sidebar menu (using iconify and to define an icon only a string to template in is enough)
     public static array $SIDEBAR_LINKS = [
-        ['/home', 'Home', 'solar--home-bold-duotone', true ],
-        ['/transcripts', 'Transcripts', 'hugeicons--quill-write-02', false ],
-        ['/snapshots', 'Snapshots', 'solar--eye-scan-bold-duotone', false ],
-        ['/archive', 'Archive', 'solar--inbox-archive-line-duotone', false ],
-        ['/collections', 'Collections', 'solar--widget-2-line-duotone', false ],
-        ['/favourites', 'Favourites', 'solar--stars-minimalistic-line-duotone', false ],
-        ['/settings', 'Settings', 'solar--settings-line-duotone', true ],
+        ['/home', 'Home', 'solar--home-bold-duotone', true],
+        ['/transcripts', 'Transcripts', 'hugeicons--quill-write-02', false],
+        ['/snapshots', 'Snapshots', 'solar--eye-scan-bold-duotone', false],
+        ['/archive', 'Archive', 'solar--inbox-archive-line-duotone', false],
+        ['/collections', 'Collections', 'solar--widget-2-line-duotone', false],
+        ['/favourites', 'Favourites', 'solar--stars-minimalistic-line-duotone', false],
+        ['/settings', 'Settings', 'solar--settings-line-duotone', false],
     ];
 
     public static array $TOPBAR_LINKS = [
-        "auth_true" => [
+        'auth_true' => [
             ['/profile', 'Profile'],
         ],
-        "auth_false" => [
+        'auth_false' => [
             ['showLogin', 'Login'],
             ['showRegister', 'Register'],
-        ]
+        ],
     ];
 
     public static function isHome() : bool {

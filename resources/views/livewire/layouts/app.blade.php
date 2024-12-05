@@ -1,50 +1,51 @@
 @use(App\Helpers\UI)
 <!DOCTYPE html>
-<html lang="{{ str_replace('_', '-', app()->getLocale()) }}" class="{{ UI::getTheme() }} no-transition">
+<html class="{{ UI::getTheme() }} no-transition" lang="{{ str_replace('_', '-', app()->getLocale()) }}">
 
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="csrf-token" content="{{ csrf_token() }}" />
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1" name="viewport">
+        <meta content="{{ csrf_token() }}" name="csrf-token" />
 
-    <title>Notable App - {{ UI::getCurrentTitle() }}</title>
+        <title>Notable App - {{ UI::getCurrentTitle() }}</title>
 
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.bunny.net">
-    <link href="https://fonts.bunny.net/css?family=poppins:200,400i,500,700,800,800i" rel="stylesheet" />
-    {{-- vite / live reload --}}
-    @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-        @vite(['resources/css/app.css', 'resources/js/app.js'])
-    @endif
+        <!-- Fonts -->
+        <link href="https://fonts.bunny.net" rel="preconnect">
+        <link href="https://fonts.bunny.net/css?family=poppins:200,400i,500,700,800,800i" rel="stylesheet" />
+        {{-- vite / live reload --}}
+        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
+            @vite(['resources/css/app.css', 'resources/js/app.js'])
+        @endif
 
-    <!-- Styles / Scripts -->
-    <link rel="stylesheet" href="{{ secure_asset('resources/css/app.css') }}?v=1">
-    <script>
-        // pass env type to js side for client side conditions
-        const APP_ENV = "{{ config('app.env') }}";
-    </script>
+        <!-- Styles / Scripts -->
+        <link href="{{ secure_asset('resources/css/app.css') }}?v=1" rel="stylesheet">
+        <script>
+            // pass env type to js side for client side conditions
+            const APP_ENV = "{{ config('app.env') }}";
+        </script>
 
-    {{-- js libs required by components used on /home only to load on home route --}}
-    @if (UI::isHome())
-        {{-- cropper --}}
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
-        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" />
-        {{-- easyMDE --}}
-        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css">
-        <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
-    @endif
-</head>
+        {{-- js libs required by components used on /home only to load on home route --}}
+        @if (UI::isHome())
+            {{-- cropper --}}
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+            <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css" rel="stylesheet" />
+            {{-- easyMDE --}}
+            <link href="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.css" rel="stylesheet">
+            <script src="https://cdn.jsdelivr.net/npm/easymde/dist/easymde.min.js"></script>
+        @endif
+    </head>
 
-<body class="/50  relative h-screen w-screen bg-base-100 pt-32 font-sans text-text-primary antialiased overflow-scroll">
-    @persist('topbar')
-        <livewire:theme-toggle />
-    @endpersist
-    <livewire:sidebar-toggle />
-    <livewire:sidebar />
-    <livewire:topbar />
-    <main id="slot-content" class=" {{ UI::getSidebarState() ? 'pl-64' : 'pl-16' }} transition-all duration-300">
-        {{ $slot }}
-    </main>
-</body>
+    <body
+        class="bg-base-100 text-text-primary relative h-screen w-screen overflow-y-scroll pt-24 font-sans antialiased">
+        @persist('theme')
+            <livewire:navs.nav-components.sidebar-theme-toggle />
+        @endpersist
+        <livewire:navs.nav-components.sidebar-toggle />
+        <livewire:navs.sidebar />
+        <livewire:navs.topbar />
+        <main class="{{ UI::getSidebarState() ? 'pl-64' : 'pl-16' }} transition-all duration-300" id="slot-content">
+            {{ $slot }}
+        </main>
+    </body>
 
 </html>

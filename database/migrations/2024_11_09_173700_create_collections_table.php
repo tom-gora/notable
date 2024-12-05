@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class () extends Migration {
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -13,13 +13,13 @@ return new class () extends Migration {
             $table->id();
             $table->timestamps();
             // props
-            $table->string("name");
-            $table->boolean("is_deleted")->default(false);
+            $table->string('name');
+            $table->boolean('is_deleted')->default(false);
             //foreign
-            $table->integer("user_id")->nullable(false)->unsigned();
-            $table->foreign("user_id")->references("id")->on("users");
-            $table->integer("note_id")->nullable(false)->unsigned();
-            $table->foreign("note_id")->references("id")->on("notes");
+            $table->integer('user_id')->nullable(false)->unsigned();
+            $table->foreign('user_id')->references('id')->on('users');
+            $table->integer('note_id')->nullable(false)->unsigned();
+            $table->foreign('note_id')->references('id')->on('notes');
         });
     }
 
