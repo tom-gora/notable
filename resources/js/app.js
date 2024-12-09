@@ -1,13 +1,24 @@
 import "./bootstrap";
-import { initSidebar, initThemeToggle } from "./interactions";
-
-//window.onload = () => {
+import * as c from "./components";
 
 document.addEventListener("livewire:navigated", () => {
-    initSidebar();
+    // this is run with every navigation because
+    // it reads the stored state of the sidebar
+    // and keeps it persistent when navigating between routes
+    c.initSidebar();
 });
 
 document.addEventListener("DOMContentLoaded", () => {
-    initThemeToggle();
     document.documentElement.classList.remove("no-transition");
+    c.initThemeToggle();
+    c.initTopbar();
+    c.initAccordion();
+    if (Livewire) {
+        Livewire.hook("component.init", ({ component }) => {
+            if (component.name === "core.editor") {
+                console.log("editor init triggered");
+                c.initEditorAlerts(component.$wire);
+            }
+        });
+    }
 });

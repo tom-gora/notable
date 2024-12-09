@@ -12,16 +12,15 @@
         <!-- Fonts -->
         <link href="https://fonts.bunny.net" rel="preconnect">
         <link href="https://fonts.bunny.net/css?family=poppins:200,400i,500,700,800,800i" rel="stylesheet" />
-        {{-- vite / live reload --}}
+
+        {{-- vite / hot reload --}}
         @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
             @vite(['resources/css/app.css', 'resources/js/app.js'])
         @endif
 
-        <!-- Styles / Scripts -->
-        <link href="{{ secure_asset('resources/css/app.css') }}?v=1" rel="stylesheet">
+        <!--pass env type to js side for client side conditions-->
         <script>
-            // pass env type to js side for client side conditions
-            const APP_ENV = "{{ config('app.env') }}";
+            const APP_ENV = "{{ config('app.env') }}"
         </script>
 
         {{-- js libs required by components used on /home only to load on home route --}}
@@ -36,7 +35,7 @@
     </head>
 
     <body
-        class="bg-base-100 text-text-primary relative h-screen w-screen overflow-y-scroll pt-24 font-sans antialiased">
+        class="bg-base-100 text-text-primary relative h-screen max-h-lvh w-screen overflow-y-scroll pt-24 font-sans antialiased md:max-h-none">
         @persist('theme')
             <livewire:navs.nav-components.sidebar-theme-toggle />
         @endpersist

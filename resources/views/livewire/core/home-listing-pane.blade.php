@@ -43,29 +43,37 @@
                                     More</p>
                             </div>
                         </x-slot:heading>
-                        <x-slot:content class="-mt-2 !pb-0" key="content_{{ $note->id }}">
-                            <x-mary-button class="accordion-btn-edit"
-                                class="{{ $this->edited === $note->id ? 'accordion-btn-inactive' : 'accordion-btn-edit' }}"
-                                key="editBtn_{{ $note->id }}" tooltip="Edit"
-                                wire:attributes="{ 'disabled': '{{ $this->viewed === $note->id ? 'disabled' : '' }}' }"
-                                wire:click.prevent="editNote({{ $note->id }})">
-                                <span class="solar--pen-new-square-line-duotone iconify"
-                                    key="edit_icon_{{ $note->id }}"></span></x-mary-button>
+                        <x-slot:content class="-mt-2 flex items-center justify-between !pb-2"
+                            key="content_{{ $note->id }}">
+                            <p class="text-accent-secondary text-xs"><span
+                                    class="text-accent-secondary-focus font-bold">Created
+                                    at:</span>
+                                {{ $note->created_at->isoFormat('D MMM YY HH:mm') }}</p>
+                            <div class="flex pe-[4.5rem]">
+                                <x-mary-button class="accordion-btn-edit"
+                                    class="{{ $this->edited === $note->id ? 'accordion-btn-inactive' : 'accordion-btn-edit' }}"
+                                    key="editBtn_{{ $note->id }}" tooltip="Edit"
+                                    wire:attributes="{ 'disabled': '{{ $this->viewed === $note->id ? 'disabled' : '' }}' }"
+                                    wire:click.prevent="editNote({{ $note->id }})">
+                                    <span class="solar--pen-new-square-line-duotone iconify"
+                                        key="edit_icon_{{ $note->id }}"></span></x-mary-button>
 
-                            <x-mary-button class="accordion-btn-fav" key="favBtn_{{ $note->id }}"
-                                tooltip="Add to favourites" wire:click.prevent="favNote({{ $note->id }})">
-                                <span class="solar--stars-minimalistic-line-duotone iconify"
-                                    key="fav_icon_{{ $note->id }}"></span></x-mary-button>
+                                <x-mary-button class="accordion-btn-fav" key="favBtn_{{ $note->id }}"
+                                    tooltip="Add to favourites" wire:click.prevent="favNote({{ $note->id }})">
+                                    <span class="solar--stars-minimalistic-line-duotone iconify"
+                                        key="fav_icon_{{ $note->id }}"></span></x-mary-button>
 
-                            <x-mary-button class="accordion-btn-collection" key="collectionBtn_{{ $note->id }}"
-                                tooltip="Add to collection" wire:click.prevent="collectionNote({{ $note->id }})">
-                                <span class="solar--widget-add-line-duotone iconify"
-                                    key="collection_icon_{{ $note->id }}"></span></x-mary-button>
+                                <x-mary-button class="accordion-btn-collection" key="collectionBtn_{{ $note->id }}"
+                                    tooltip="Add to collection"
+                                    wire:click.prevent="collectionNote({{ $note->id }})">
+                                    <span class="solar--widget-add-line-duotone iconify"
+                                        key="collection_icon_{{ $note->id }}"></span></x-mary-button>
 
-                            <x-mary-button class="accordion-btn-archive" key="archiveBtn_{{ $note->id }}"
-                                tooltip="Archive" wire:click.prevent="archiveNote({{ $note->id }})">
-                                <span class="solar--archive-down-line-duotone iconify"
-                                    key="archive_icon_{{ $note->id }}"></span></x-mary-button>
+                                <x-mary-button class="accordion-btn-archive" key="archiveBtn_{{ $note->id }}"
+                                    tooltip="Archive" wire:click.prevent="archiveNote({{ $note->id }})">
+                                    <span class="solar--archive-down-line-duotone iconify"
+                                        key="archive_icon_{{ $note->id }}"></span></x-mary-button>
+                            </div>
                         </x-slot:content>
                     </x-mary-collapse>
                 @endforeach
@@ -74,32 +82,5 @@
         @if ($filter === '')
             <div class="px-8 pt-4" id="notes-pagination">{{ $this->notes->links() }}</div>
         @endif
-        <script>
-            // TODO: also undo any previously toggled labels back to original state when new one is toggled
-            // DONE implementation -> rudimental AF. The mary lib uses ghost radio input to bind state and toggles classes, playing animations
-            // but fails to uncheck the radios when next one gets checked. So I need to do the manual work for them.
-            // I hate it as it is a horrible nested expression russian doll but it is what it is I guess
-            const collapseGroupsRadios = document.querySelectorAll('.collapse input[type="radio"]');
-            collapseGroupsRadios.forEach(radio => {
-                const siblingHint = radio.parentElement.querySelector('.collapse-hint');
-                radio.addEventListener('change', function() {
-                    if (this.checked) {
-                        collapseGroupsRadios.forEach(otherRadio => {
-                            if (otherRadio !== this) {
-                                otherRadio.checked = false;
-                                const otherHint = otherRadio.parentElement.querySelector(
-                                    '.collapse-hint');
-                                if (otherHint) {
-                                    otherHint.innerText = 'More';
-                                }
-                            }
-                        });
-                        siblingHint.innerText = 'Less';
-                    } else {
-                        siblingHint.innerText = 'More';
-                    }
-                });
-            });
-        </script>
     @endif
 </div>

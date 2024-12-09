@@ -18,16 +18,7 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: [
-                    "Poppins",
-                    "ui-sans-serif",
-                    "system-ui",
-                    "sans-serif",
-                    "Apple Color Emoji",
-                    "Segoe UI Emoji",
-                    "Segoe UI Symbol",
-                    "Noto Color Emoji",
-                ],
+                sans: ["Poppins", "ui-sans-serif", "system-ui", "sans-serif"],
             },
             colors: {
                 "accent-primary": "var(--accent-primary)",

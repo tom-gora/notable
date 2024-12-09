@@ -6,7 +6,9 @@
                 class="{{ $this->isSnapshot ? 'solar--document-text-line-duotone' : 'solar--eye-scan-line-duotone' }} iconify !text-3xl"></span></x-mary-button>
     </div>
     <p class="text-text-primary mb-2 text-xl font-bold">{{ __('Viewing note:') }}</p>
-    <h3 class="text-accent-secondary flex justify-start gap-2 text-2xl">"{{ $this->data['title'] }}"</h3>
+    <h3 class="text-accent-secondary border-b-accent-secondary flex w-8/12 justify-start gap-2 border-b pb-2 text-2xl">
+        "{{ $this->data['title'] }}"
+    </h3>
     @if (!$this->isSnapshot)
         <div class="prose h-full w-full p-8" id="html-target">
             {!! $this->data['html'] !!}

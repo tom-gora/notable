@@ -123,6 +123,7 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    /* apis */
     'cloud_vision_api' => [
         'g_token' => env('G_TOKEN'),
         'g_app_id' => env('G_APP_ID'),

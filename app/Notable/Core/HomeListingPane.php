@@ -84,7 +84,7 @@ class HomeListingPane extends Component {
         $query = auth()->user()->notes();
         /*filtering logic*/
         if ($this->filter === '') {
-            return $query->paginate(5);
+            return $query->latest('created_at')->paginate(5);
         } elseif (strlen($this->filter) > 0) {
             return $query->where(function ($query) {
                 $query->where('title', 'like', '%' . $this->filter . '%')
