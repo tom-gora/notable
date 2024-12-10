@@ -2,7 +2,6 @@
 
 namespace App\Notable\Core;
 
-use App\Models\Note;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\On;
 use Livewire\Component;
@@ -53,19 +52,22 @@ class Editor extends Component {
     }
 
     public function initNote() : void {
-        $n = Note::find($this->edited_id);
+        $n = auth()->user()->notes()->find($this->edited_id);
         $this->markdown = $n->markdown;
         $this->title = $n->title;
     }
 
     public function save(bool $withAlert) : void {
-        $n = Note::find($this->edited_id);
-        $n->markdown = $this->markdown;
-
-        $success = $n->save();
-        if ($success) {
-            $this->dispatch('note-saved', showAlert: $withAlert);
+        $n = auth()->user()->notes()->find($this->edited_id);
+        if (!$n) {
+            return;
         }
+        $n->markdown = $this->markdown;
+        $success = $n->save();
+        if (!$success) {
+            return;
+        }
+        $this->dispatch('note-saved', showAlert: $withAlert);
     }
 
     public function closeEditor() : void {

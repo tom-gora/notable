@@ -13,15 +13,15 @@ return new class extends Migration {
             // base
             $table->bigIncrements('id')->nullable(false);
             $table->timestamps();
-            // raw input data -> img and api response
+            // input data -> img
             $table->string('img_url');
-            $table->text('extracted_data');
             // bool props
             $table->boolean('is_favourite')->default(false);
             $table->boolean('is_archived')->default(false);
             $table->boolean('is_edited')->default(false);
             $table->boolean('is_deleted')->default(false);
             // output data
+            $table->text('extracted_data');
             $table->text('markdown');
             $table->string('title');
             //foreign

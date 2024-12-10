@@ -2,9 +2,7 @@
 
 namespace App\Helpers;
 
-use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Str;
-use Symfony\Component\HttpFoundation\Response;
 
 class MarkdownProcessor {
     public function stripMdToPlain(string $md) : string {
@@ -26,13 +24,5 @@ class MarkdownProcessor {
         $raw = preg_replace(["/\s+/", "/\n/"], ' ', $raw); // truncate spaces, remove newlines
 
         return trim($raw);
-    }
-
-    public function saveToPdf(string $md, string $title) : Response {
-        $html = Str::of($md)->markdown();
-        $pdf = Pdf::loadHTML($html);
-        $title_to_snake_case = Str::of($title)->snake()->title();
-
-        return $pdf->download($title_to_snake_case . '.pdf');
     }
 }

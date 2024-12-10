@@ -54,9 +54,8 @@ class AddNoteForm extends Component {
         Storage::delete($extreme_wipeout);
     }
 
-    // NOTE: make use of controller
+    // NOTE: make use of controllers
     private function processNote() : mixed {
-
         // handle trigger with empty file input
         if ($this->note_image == null) {
             $this->addError('image_error', 'Select image first.');
@@ -81,7 +80,6 @@ class AddNoteForm extends Component {
 
         // instantiate controller for calling api
         $transcriber = new ImageToMarkdownController;
-        /*dd("have we got here?");*/
         $b64 = $this->imageToBase64($optimized_img);
 
         $response_text = $transcriber->noteToText($b64);
@@ -95,8 +93,6 @@ class AddNoteForm extends Component {
         $mdp = new MarkdownProcessor;
 
         $raw = $mdp->stripMdToPlain($response_text);
-
-        $mdp->saveToPdf($response_text, $this->note_title);
 
         return [
             'img_url' => Storage::url(str_replace($abs_strip, '', $optimized_img)),

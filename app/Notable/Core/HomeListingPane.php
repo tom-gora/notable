@@ -2,7 +2,6 @@
 
 namespace App\Notable\Core;
 
-use App\Models\Note;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -41,23 +40,19 @@ class HomeListingPane extends Component {
      * @param  mixed  $id
      */
     public function deleteNote($id) : void {
-        $n = Note::find($id);
+        $n = auth()->user()->notes()->find($id);
         if (!$n) {
             return;
         }
-
-        $allowed = $n->user_id == auth()->user()->id;
-        if (!$allowed) {
+        $deleted = $n->delete();
+        if (!$deleted) {
             return;
         }
-        $deleted = $n->delete();
-        if ($deleted) {
-            //TODO: needs separate event for deletion to handle ui state reset differently
-            $this->dispatch('note-updated');
-            $this->dispatch('note-deleted');
-            $this->edited = null;
-            $this->viewed = null;
-        }
+        //TODO: needs separate event for deletion to handle ui state reset differently
+        $this->dispatch('note-updated');
+        $this->dispatch('note-deleted');
+        $this->edited = null;
+        $this->viewed = null;
     }
 
     /**
@@ -91,7 +86,8 @@ class HomeListingPane extends Component {
                     ->orWhere('markdown', 'like', '%' . $this->filter . '%');
             })->get();
         }
-        //no filter and no notes added yet. will conditionally cause placeholder to render
+        // if no filter AND no notes added yet
+        // this will conditionally cause placeholder to render
         return null;
     }
 
