@@ -59,7 +59,7 @@ export default {
             {
                 light: {
                     primary: "#da614c",
-                    secondary: "#8590c8",
+                    secondary: "#505678",
                     warning: "#ff9900",
                     success: "#009485",
                     error: "#ff5724",

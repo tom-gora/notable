@@ -30,6 +30,8 @@ export default function () {
         themeToggle.classList.remove("bg-info", "translate-x-6");
         themeToggle.innerHTML = lightSvgString;
         document.documentElement.classList.remove("dark");
+        // explicitly for component library to work
+        document.documentElement.setAttribute("data-theme", "light");
         document.cookie = `${themeLStateCookie}`;
     };
 
@@ -38,6 +40,8 @@ export default function () {
         themeToggle.classList.add("bg-info", "translate-x-6");
         themeToggle.innerHTML = darkSvgString;
         document.documentElement.classList.add("dark");
+        // explicitly for component library to work
+        document.documentElement.setAttribute("data-theme", "dark");
         document.cookie = `${themeDStateCookie}`;
     };
 

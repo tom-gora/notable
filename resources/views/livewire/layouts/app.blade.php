@@ -9,14 +9,13 @@
 
         <title>Notable App - {{ UI::getCurrentTitle() }}</title>
 
+        <link href="/favicon.svg" rel="icon" type="image/svg+xml" />
+
         <!-- Fonts -->
         <link href="https://fonts.bunny.net" rel="preconnect">
         <link href="https://fonts.bunny.net/css?family=poppins:200,400i,500,700,800,800i" rel="stylesheet" />
 
-        {{-- vite / hot reload --}}
-        @if (file_exists(public_path('build/manifest.json')) || file_exists(public_path('hot')))
-            @vite(['resources/css/app.css', 'resources/js/app.js'])
-        @endif
+        @vite(['resources/css/app.css', 'resources/js/app.js'])
 
         <!--pass env type to js side for client side conditions-->
         <script>

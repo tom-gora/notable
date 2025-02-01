@@ -29,3 +29,4 @@ yarn-error.log
 .gitattributes
 .styleci.yml
 **/*.log
+/docker_services

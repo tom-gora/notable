@@ -1,4 +1,3 @@
-{{-- NOTE: based off src https://www.creative-tim.com/twcomponents/component/switch-to-darkmode --}}
 <div class="fixed left-1 top-20 z-50 flex w-16 grow scale-90 justify-center md:grow-0 md:scale-100">
     <button aria-label="Toggle theme"
         class="{{ $sidebarState ? 'translate-x-[calc(100vw-160%)] md:translate-x-44' : '' }} focus-visible:ring-accent-secondary bg-accent-secondary-subtle flex h-8 w-[52px] items-center rounded-full transition duration-300 focus:outline-none focus-visible:ring-2"

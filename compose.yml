@@ -1,0 +1,85 @@
+############
+# SERVICES #
+############
+
+services:
+  ###############
+  # NOTABLE APP #
+  ###############
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    restart: "no"
+    container_name: app
+    networks:
+      - intranet
+    ports:
+      - "9000:9000"
+    volumes:
+      - ".:/var/www/html"
+    working_dir: /var/www/html
+    depends_on:
+      - server
+      - db
+
+  ################
+  # CADDY SERVER #
+  ################
+
+  server:
+    image: "caddy:alpine"
+    restart: "no"
+    container_name: server
+    networks:
+      - intranet
+    ports:
+      - "80:80"
+      - "443:443"
+      - "443:443/udp"
+    volumes:
+      - "./docker_services/server_service/Caddyfile:/etc/caddy/Caddyfile"
+      - "./docker_services/server_service/caddy.log:/etc/caddy/log/caddy.log"
+      - ".:/srv"
+      - "./docker_services/server_service/caddy_data:/data"
+      - "./docker_services/server_service/config:/config"
+
+  ##############
+  # POSTGRESQL #
+  ##############
+
+  db:
+    image: "postgres:alpine"
+    platform: linux/amd64
+    restart: "no"
+    ports:
+      - "5432:5432"
+    expose:
+      - 5432
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: "${DB_DATABASE}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - "./docker_services/db_service/pg_data:/var/lib/postgresql/data"
+    container_name: db
+    networks:
+      - intranet
+    healthcheck:
+      interval: 10s
+      test:
+        - CMD-SHELL
+        - "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"
+      timeout: 5s
+      retries: 5
+
+##################
+# DOCKER NETWORK #
+##################
+
+networks:
+  intranet:
+    name: intranet
+    driver: bridge

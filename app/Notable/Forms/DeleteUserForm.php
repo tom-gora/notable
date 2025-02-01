@@ -2,7 +2,7 @@
 
 namespace App\Notable\Forms;
 
-use App\Livewire\Actions\Logout;
+use App\Notable\Actions\Logout;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;

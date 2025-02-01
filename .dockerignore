@@ -1,0 +1,16 @@
+**/node_modules
+**/tests
+**/.git
+**/.gitignore
+**/docker_services
+**/tailwind.config.ts
+**/postcss.config.js
+**/composer.lock
+**/package.lock
+**/vite.config.js
+**/Dockerfile.app
+**/.bladeformatterrc.json
+**/.editorconfig
+**/.env.example
+**/phpunit.xml
+**/pint.js

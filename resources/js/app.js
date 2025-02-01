@@ -6,13 +6,13 @@ document.addEventListener("livewire:navigated", () => {
     // it reads the stored state of the sidebar
     // and keeps it persistent when navigating between routes
     c.initSidebar();
-});
 
-document.addEventListener("DOMContentLoaded", () => {
     document.documentElement.classList.remove("no-transition");
     c.initThemeToggle();
     c.initTopbar();
     c.initAccordion();
+});
+document.addEventListener("livewire:init", () => {
     if (Livewire) {
         Livewire.hook("component.init", ({ component }) => {
             if (component.name === "core.editor") {

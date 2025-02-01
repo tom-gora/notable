@@ -12,9 +12,9 @@
         --accent-primary-focus: #973625;
         --accent-primary-content: #fbefed;
 
-        --accent-secondary: #8590c8;
-        --accent-secondary-subtle: #b6bcde;
-        --accent-secondary-focus: #5d658c;
+        --accent-secondary: #505678;
+        --accent-secondary-subtle: #9296b2;
+        --accent-secondary-focus: #383d54;
         --accent-secondary-content: #f3f4fa;
 
         --neutral: #353129;
@@ -46,6 +46,12 @@
         --base-100: #181716;
         --base-200: #0c0c0b;
         --base-300: #020202;
+
+        /*contrast adjusted for dark theme for this shade*/
+        --accent-secondary: #8590c8;
+        --accent-secondary-subtle: #b6bcde;
+        --accent-secondary-focus: #5d658c;
+        --accent-secondary-content: #f3f4fa;
     }
 
     /*  HACK: =========================================================================/

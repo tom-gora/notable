@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import laravel from "laravel-vite-plugin";
+
 import fs from "fs";
 import path from "path";
 
@@ -27,7 +28,8 @@ export default defineConfig({
         laravel({
             publicDirectory: "public",
             input: [...cssFiles, ...jsFiles], // Include from spread arrays
-            refresh: true,
+            // detectTls: "https://ssl-domain.com",
         }),
     ],
+    //base: "https://ssl-domain.com/public",
 });
