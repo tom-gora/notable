@@ -1,5 +1,5 @@
-<li class="{{ $offset }}">
-    <a class="text-text-primary hover:bg-accent-secondary {{ $current ? 'bg-base-100 font-medium' : ' ' }} {{ $sidebarState ? '' : 'w-12' }} group ml-auto mr-1 flex items-center justify-end gap-8 rounded-lg p-2 transition duration-150"
+<li class="{{ $offset }}" role="nav-link">
+    <a class="text-text-primary hover:bg-accent-secondary {{ $current ? 'bg-base-100 font-medium' : ' ' }} {{ $sidebarState ? '' : 'w-12' }} group ml-auto mr-1 flex items-center justify-end gap-8 rounded-lg p-2 transition duration-100"
         href="{{ $href }}" wire:navigate.hover>
         <span class="ms-3">
             {{ $title }}

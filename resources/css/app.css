@@ -173,6 +173,10 @@
         opacity: unset !important;
     }
 
+    .tham-inner {
+        transition: all 100ms ease-in-out !important;
+    }
+
     /*  HACK: =========================================================================/
     //  On firefox weird rendering isssue where one hamburger line renders thinner than others?
     //  Had to do manual magic to fix. Not sure if long-term solution. Chromium works normal
@@ -265,7 +269,8 @@
     //  extra action link used on forms
     //  ==============================================================================*/
     .form-anchor {
-        @apply text-sm text-text-subtle hover:text-warning transition-colors duration-150 focus-visible:outline-none focus-visible:underline focus:text-warning;
+        @apply text-sm text-text-subtle hover:text-warning transition-colors duration-100 focus-visible:outline-none focus-visible:underline focus:text-warning;
+        transition: all 100ms ease-in-out !important;
     }
 
     /*  NOTE: =========================================================================/
@@ -472,4 +477,20 @@ form div:has(> input[type="text"]) button:focus-visible {
 
 #notes-pagination nav p.leading-5 {
     @apply hidden;
+}
+
+/* HACK: =========================================================================/
+//  Fixing livewire:navigate breaking tailwind generated transitions. likely js is doing style injections or smth
+// and breaks so transitions need to be explicitly enforced in CSS with ! and it works then
+//  ==============================================================================*/
+#drawer-navigation,
+#secondary-nav,
+button[aria-label="Toggle theme"],
+button[aria-label="Toggle theme"] > div:first-of-type,
+#notable-listing-pane {
+    transition: all 200ms ease-in-out !important;
+}
+
+#li[role="nav-link"] {
+    transition: all 100ms ease-in-out !important;
 }

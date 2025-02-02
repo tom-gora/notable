@@ -17,11 +17,6 @@
 
         @vite(['resources/css/app.css', 'resources/js/app.js'])
 
-        <!--pass env type to js side for client side conditions-->
-        <script>
-            const APP_ENV = "{{ config('app.env') }}"
-        </script>
-
         {{-- js libs required by components used on /home only to load on home route --}}
         @if (UI::isHome())
             {{-- cropper --}}
@@ -35,13 +30,13 @@
 
     <body
         class="bg-base-100 text-text-primary relative h-screen max-h-lvh w-screen overflow-y-scroll pt-24 font-sans antialiased md:max-h-none">
-        @persist('theme')
+        @persist('toggles')
             <livewire:navs.nav-components.sidebar-theme-toggle />
+            <livewire:navs.nav-components.sidebar-toggle />
+            <livewire:navs.sidebar />
         @endpersist
-        <livewire:navs.nav-components.sidebar-toggle />
-        <livewire:navs.sidebar />
         <livewire:navs.topbar />
-        <main class="{{ UI::getSidebarState() ? 'pl-64' : 'pl-16' }} transition-all duration-300" id="slot-content">
+        <main class="{{ UI::getSidebarState() ? 'pl-64' : 'pl-16' }} transition-all duration-200" id="slot-content">
             {{ $slot }}
         </main>
     </body>

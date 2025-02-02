@@ -1,4 +1,4 @@
-<div class="{{ $this->edited === null ? 'h-fit w-full p-4' : '!h-0 !w-0 !p-0' }} bg-base-200 relative h-fit overflow-hidden rounded-xl transition-all duration-150 md:w-2/3"
+<div class="{{ $this->edited === null ? 'h-fit w-full p-4' : '!h-0 !w-0 !p-0' }} bg-base-200 relative h-fit overflow-hidden rounded-xl transition-all duration-200 md:w-2/3"
     id="notable-listing-pane">
 
     {{-- notes list accordion --}}

@@ -1,5 +1,5 @@
 @use(App\Helpers\UI)
-<nav class="{{ UI::getSidebarState() ? 'pl-80' : 'pl-32' }} bg-base-100 shadow-base-200/75 absolute top-0 z-30 mt-8 flex h-20 w-screen flex-row-reverse items-center justify-between pr-1 transition-all duration-300 md:fixed md:mt-0 md:flex-row md:pr-8"
+<nav class="{{ UI::getSidebarState() ? 'pl-80' : 'pl-32' }} bg-base-100 shadow-base-200/75 absolute top-0 z-30 mt-8 flex h-20 w-screen flex-row-reverse items-center justify-between pr-1 transition-all duration-200 md:fixed md:mt-0 md:flex-row md:pr-8"
     id="secondary-nav">
     @auth
         <livewire:navs.nav-components.topbar-greeting />

@@ -1,3 +1,18 @@
+const sidebar = document.querySelector("#drawer-navigation");
+const sidebarLinks = sidebar.querySelectorAll("a");
+const sidebarToggle = document.querySelector(
+    "button[aria-controls='drawer-navigation']",
+);
+const tham = document.querySelector(".tham");
+const thamInner = tham.querySelector(".tham-inner");
+const slot = document.querySelector("#slot-content");
+const themeBtn = document.querySelector('button[aria-label="Toggle theme"]');
+const topbar = document.querySelector("#secondary-nav");
+
+// vary cookies string based on env b/c Secure and SameSite props are not allowed over http
+let sidebar0StateCookie = "sidebar=; SameSite=None; Secure";
+let sidebar1StateCookie = "sidebar=expanded; SameSite=None; Secure";
+
 // sidebar helpers
 const hideSidebar = (
     themeBtn,
@@ -54,32 +69,8 @@ const showSidebar = (
 };
 
 export default function () {
-    const sidebar = document.querySelector("#drawer-navigation");
-    const sidebarLinks = sidebar.querySelectorAll("a");
-    const sidebarToggle = document.querySelector(
-        "button[aria-controls='drawer-navigation']",
-    );
-    const tham = document.querySelector(".tham");
-    const thamInner = tham.querySelector(".tham-inner");
-    const slot = document.querySelector("#slot-content");
-    const themeBtn = document.querySelector(
-        'button[aria-label="Toggle theme"]',
-    );
-    const topbar = document.querySelector("#secondary-nav");
-
-    // vary cookies string based on env b/c Secure and SameSite props are not allowed over http
-    let sidebar0StateCookie;
-    let sidebar1StateCookie;
-
-    if (APP_ENV === "local") {
-        sidebar0StateCookie = "sidebar=;";
-        sidebar1StateCookie = "sidebar=expanded;";
-    } else {
-        sidebar0StateCookie = "sidebar=; SameSite=None; Secure";
-        sidebar1StateCookie = "sidebar=expanded; SameSite=None; Secure";
-    }
-
     sidebarToggle.addEventListener("click", () => {
+        console.log("clicked sidebar toggle");
         sidebar.getAttribute("aria-expanded") == "true"
             ? hideSidebar(
                   themeBtn,
