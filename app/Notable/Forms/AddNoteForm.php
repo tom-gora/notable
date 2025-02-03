@@ -6,8 +6,10 @@ use App\Helpers\MarkdownProcessor;
 use App\Http\Controllers\ImageOptimisationController;
 use App\Http\Controllers\ImageToMarkdownController;
 use App\Models\Note;
+use Carbon\Carbon;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Arr;
+use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Storage;
 use Livewire\Attributes\On;
 use Livewire\Attributes\Rule;
@@ -46,12 +48,24 @@ class AddNoteForm extends Component {
 
     #[On('tmp-cleanup')]
     public function tmpCleanup() : void {
-        if (!$this->note_img_url) {
+        /* do not leave to livewire to periodically clean tmp files daily and keep it clogged.
+        just Call it explicitly. to clean any file older than 5min on crud operations */
+        /* yes wasted compute I know, but ok for a toy demo on a vps that I do not want clogged up */
+        $lvr_tmp_dir = storage_path() . '/app/private/livewire-tmp';
+        if (!File::isDirectory($lvr_tmp_dir)) {
             return;
         }
-        $tmp = storage_path() . '/app/public/tmp/';
-        $extreme_wipeout = Storage::allFiles($tmp);
-        Storage::delete($extreme_wipeout);
+        $files = File::files($lvr_tmp_dir);
+
+        foreach ($files as $f) {
+            $touched = Carbon::createFromTimestamp(File::lastModified($f));
+
+            $diffTime = now()->diffInMinutes($touched);
+
+            if ($diffTime < -5) {
+                File::delete($f);
+            }
+        }
     }
 
     // NOTE: make use of controllers
@@ -76,7 +90,6 @@ class AddNoteForm extends Component {
 
             return null;
         }
-        $this->tmpCleanup();
 
         // instantiate controller for calling api
         $transcriber = new ImageToMarkdownController;
@@ -94,6 +107,7 @@ class AddNoteForm extends Component {
 
         $raw = $mdp->stripMdToPlain($response_text);
 
+        $this->tmpCleanup();
         return [
             'img_url' => Storage::url(str_replace($abs_strip, '', $optimized_img)),
             'extracted_data' => $raw,
@@ -121,7 +135,7 @@ class AddNoteForm extends Component {
         $this->dispatch('note-updated');
     }
 
-    //NOTE: Component lifecycle behaviours
+    // NOTE: Component lifecycle behaviours
 
     /**
      * @param  mixed  $stopPropagation
@@ -137,7 +151,7 @@ class AddNoteForm extends Component {
             // for js to react appropriately on client side
             $this->dispatch('image_error');
         } else {
-            //default
+            // default
             $this->addError('image_error', $e->getMessage());
         }
         $this->tmpCleanup();

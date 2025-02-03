@@ -2,6 +2,7 @@
 
 namespace App\Notable\Core;
 
+use App\Helpers\BackgroundTaskRunner;
 use Illuminate\Contracts\View\View;
 use Livewire\Attributes\Computed;
 use Livewire\Attributes\On;
@@ -40,6 +41,7 @@ class HomeListingPane extends Component {
      * @param  mixed  $id
      */
     public function deleteNote($id) : void {
+        $BTR = new BackgroundTaskRunner;
         $n = auth()->user()->notes()->find($id);
         if (!$n) {
             return;
@@ -48,7 +50,11 @@ class HomeListingPane extends Component {
         if (!$deleted) {
             return;
         }
-        //TODO: needs separate event for deletion to handle ui state reset differently
+        $cleaned = $BTR->imageCleanupHook($n);
+        if (!$cleaned) {
+            return;
+        }
+        // HACK: needs separate event for deletion to handle ui state reset differently
         $this->dispatch('note-updated');
         $this->dispatch('note-deleted');
         $this->edited = null;
@@ -77,9 +83,9 @@ class HomeListingPane extends Component {
     public function notes() : ?object {
         // query based off model relationship now
         $query = auth()->user()->notes();
-        /*filtering logic*/
+        /* filtering logic */
         if ($this->filter === '') {
-            return $query->latest('created_at')->paginate(5);
+            return $query->latest('created_at')->paginate(8);
         } elseif (strlen($this->filter) > 0) {
             return $query->where(function ($query) {
                 $query->where('title', 'like', '%' . $this->filter . '%')
