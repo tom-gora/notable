@@ -7,37 +7,33 @@ services:
   # NOTABLE APP #
   ###############
 
-  app:
+  notable-app:
     build:
       context: .
       dockerfile: Dockerfile.app
-    restart: "no"
-    container_name: app
+    restart: "unless-stopped"
+    container_name: notable-app
     networks:
       - intranet
     ports:
-      - "9000:9000"
+      - "9001:9000"
     volumes:
       - ".:/var/www/html"
     working_dir: /var/www/html
     depends_on:
-      - server
-      - db
+      - notable-server
+      - notable-db
 
   ################
   # CADDY SERVER #
   ################
 
-  server:
+  notable-server:
     image: "caddy:alpine"
     restart: "no"
-    container_name: server
+    container_name: notable-server
     networks:
       - intranet
-    ports:
-      - "80:80"
-      - "443:443"
-      - "443:443/udp"
     volumes:
       - "./docker_services/server_service/Caddyfile:/etc/caddy/Caddyfile"
       - "./docker_services/server_service/caddy.log:/etc/caddy/log/caddy.log"
@@ -49,14 +45,13 @@ services:
   # POSTGRESQL #
   ##############
 
-  db:
+  notable-db:
     image: "postgres:alpine"
     platform: linux/amd64
-    restart: "no"
+    restart: "unless-stopped"
+    # for external connections to this specific pgsql instance
     ports:
-      - "5432:5432"
-    expose:
-      - 5432
+      - "5432:5433"
     environment:
       PGDATA: /var/lib/postgresql/data/pgdata
       POSTGRES_DB: "${DB_DATABASE}"
@@ -64,7 +59,7 @@ services:
       POSTGRES_PASSWORD: "${DB_PASSWORD}"
     volumes:
       - "./docker_services/db_service/pg_data:/var/lib/postgresql/data"
-    container_name: db
+    container_name: notable-db
     networks:
       - intranet
     healthcheck:
