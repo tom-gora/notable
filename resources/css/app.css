@@ -1,0 +1,561 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+    /*  NOTE: =========================================================================/
+    //  automatic (no need for `dark` TW utility for toggling) theme
+    //  ==============================================================================*/
+    :root {
+        --accent-primary: #da614c;
+        --accent-primary-subtle: #e9a094;
+        --accent-primary-focus: #973625;
+        --accent-primary-content: #fbefed;
+
+        --accent-secondary: #505678;
+        --accent-secondary-subtle: #9296b2;
+        --accent-secondary-focus: #383d54;
+        --accent-secondary-content: #f3f4fa;
+
+        --neutral: #353129;
+        --neutral-subtle: #7c725a;
+        --neutral-focus: #2a2721;
+        --neutral-content: #ebeaea;
+
+        --text-primary: #131212;
+        --text-subtle: #302e2b;
+
+        --surface: #edd4a6;
+        --surface-strong: #daa84c;
+
+        --base-100: #f8eee2;
+        --base-200: #c0b8ad;
+        --base-300: #9a938a;
+
+        --info: #478ec7;
+        --success: #009485;
+        --warning: #ff9900;
+        --error: #ff5724;
+    }
+
+    :root[class~="dark"] {
+        /*Only colors that alter for darkk mode*/
+        --text-primary: #e7dcbc;
+        --text-subtle: #b6ad90;
+
+        --base-100: #181716;
+        --base-200: #0c0c0b;
+        --base-300: #020202;
+
+        /*contrast adjusted for dark theme for this shade*/
+        --accent-secondary: #8590c8;
+        --accent-secondary-subtle: #b6bcde;
+        --accent-secondary-focus: #5d658c;
+        --accent-secondary-content: #f3f4fa;
+    }
+
+    /*  HACK: =========================================================================/
+    //  no transitions on initial page load
+    //  ==============================================================================*/
+    .no-transition * {
+        -webkit-transition: none !important;
+        -moz-transition: none !important;
+        -ms-transition: none !important;
+        -o-transition: none !important;
+        transition: none !important;
+        transition-delay: 0 !important;
+    }
+
+    /*  NOTE: =========================================================================/
+    //  override default button color from daisy/mary globally
+    //  ==============================================================================*/
+    :root[class~="dark"] .btn {
+        @apply text-text-primary;
+    }
+
+    /*  NOTE: =========================================================================/
+    //  animation declarations
+    //  ==============================================================================*/
+    @keyframes fade-in {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @keyframes fade-in-up {
+        from {
+            opacity: 0;
+            transform: translateY(100%);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    @keyframes slide-out-top {
+        0% {
+            display: block;
+            -webkit-transform: translateY(0);
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        100% {
+            display: none;
+            -webkit-transform: translateY(-1000px);
+            transform: translateY(-1000px);
+            opacity: 0;
+        }
+    }
+}
+
+@layer components {
+    /*  NOTE: =========================================================================/
+    //  dynamic logo clamping / fixed for sm displays
+    //  ==============================================================================*/
+    .clamped-logo {
+        left: clamp(16rem, 50vw, 60%);
+        transform: translateX(-30%);
+    }
+
+    .sm-fixed-logo {
+        left: calc(100% - 9rem);
+        top: -1rem;
+    }
+
+    /*  NOTE: =========================================================================/
+    // adjust mary components form: error fields/inputs/checkboxes
+    //  ==============================================================================*/
+    .form-error-custom {
+        @apply text-error translate-y-2 text-sm;
+    }
+
+    .base-input {
+        @apply border-none bg-neutral-content text-neutral py-1 px-2 focus-visible:!outline-none focus-visible:!ring-accent-secondary focus-visible:!ring-2 rounded-md shadow-sm;
+    }
+
+    div:has(> .input-primary.peer:focus) label {
+        @apply !text-info;
+    }
+
+    .base-checkbox {
+        @apply border-none bg-neutral-content p-2 focus-visible:!outline-none focus-visible:!ring-accent-secondary focus-visible:!ring-2 rounded-md;
+    }
+
+    .base-checkbox:checked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='w-full aspect-square' fill='rgb(19 18 18)' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22m4.03-13.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l4.47-4.47a.75.75 0 0 1 1.06 0' clip-rule='evenodd'/%3E%3C/svg%3E");
+        background-color: var(--accent-secondary);
+    }
+
+    :root[class~="dark"] .base-checkbox:checked {
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' class='w-full aspect-square' style='fill:rgb(231 220 188)' viewBox='0 0 24 24'%3E%3Cpath fill-rule='evenodd' d='M12 22c-4.714 0-7.071 0-8.536-1.465C2 19.072 2 16.714 2 12s0-7.071 1.464-8.536C4.93 2 7.286 2 12 2s7.071 0 8.535 1.464C22 4.93 22 7.286 22 12s0 7.071-1.465 8.535C19.072 22 16.714 22 12 22m4.03-13.03a.75.75 0 0 1 0 1.06l-5 5a.75.75 0 0 1-1.06 0l-2-2a.75.75 0 1 1 1.06-1.06l1.47 1.47l4.47-4.47a.75.75 0 0 1 1.06 0' clip-rule='evenodd'/%3E%3C/svg%3E");
+    }
+
+    div:has(.base-checkbox):has(> label) {
+        @apply text-text-primary justify-end flex;
+        input[type="checkbox"] {
+            @apply -translate-y-2 justify-end flex;
+        }
+    }
+
+    div:has(.base-checkbox):has(> label) label {
+        @apply w-fit;
+    }
+
+    /*  NOTE: =========================================================================/
+    //  improve styles of 3rd party hamburger component used to not break with my theme
+    //  ==============================================================================*/
+    .tham:hover,
+    .tham:focus-visible,
+    .tham:focus {
+        opacity: unset !important;
+    }
+
+    .tham-inner {
+        transition: all 100ms ease-in-out !important;
+    }
+
+    /*  HACK: =========================================================================/
+    //  On firefox weird rendering isssue where one hamburger line renders thinner than others?
+    //  Had to do manual magic to fix. Not sure if long-term solution. Chromium works normal
+    //  ==============================================================================*/
+    @-moz-document url-prefix() {
+        .tham .tham-inner {
+            height: 4px;
+            @media (max-width: 768px) {
+                display: none;
+            }
+        }
+
+        .tham.tham-active .tham-inner {
+            height: 3px;
+        }
+    }
+
+    /*  NOTE: =========================================================================/
+    //  custom accordion buttons. regex selectors and complex nested structure
+    //  holy fuck this is the best css I've ever written I love it!
+    //  ==============================================================================*/
+    button[class*="accordion-btn"] {
+        --tooltip-offset: 77%;
+
+        @apply shadow-none p-0 m-0 h-min z-10 bg-transparent outline-0 border-0 focus:ring-0;
+        span {
+            @apply text-2xl mx-2 origin-center m-0 p-0;
+        }
+
+        &::before {
+            @apply bg-base-100 shadow-base-300 dark:shadow-none shadow-sm text-text-subtle text-[0.75rem] py-0 delay-300 font-normal;
+        }
+
+        &::after {
+            display: none;
+        }
+    }
+
+    button[class*="accordion-btn"]:hover,
+    button[class*="accordion-btn"]:focus-visible,
+    button[class*="accordion-btn"]:focus {
+        scale: 1.1;
+
+        &[class*="view"] span {
+            @apply text-surface-strong;
+        }
+
+        &[class*="delete"] span {
+            @apply text-error;
+        }
+
+        &[class*="edit"] span,
+        &[class*="fav"] span,
+        &[class*="collection"] span,
+        &[class*="archive"] span {
+            @apply text-info;
+        }
+
+        &[class*="inactive"] {
+            scale: unset !important;
+            pointer-events: none !important;
+            cursor: move !important;
+
+            &::before {
+                display: none !important;
+            }
+        }
+    }
+
+    button[class*="accordion-btn"][class*="view"] span {
+        @apply text-surface;
+    }
+
+    button[class*="accordion-btn"][class*="delete"] span {
+        @apply text-accent-primary;
+    }
+
+    button[class*="accordion-btn"][class*="edit"] span,
+    button[class*="accordion-btn"][class*="fav"] span,
+    button[class*="accordion-btn"][class*="archive"] span,
+    button[class*="accordion-btn"][class*="collection"] span {
+        @apply text-accent-secondary-focus;
+    }
+
+    button[class*="accordion-btn"][class*="inactive"] span {
+        @apply text-neutral delay-0;
+    }
+
+    /*  NOTE: =========================================================================/
+    //  extra action link used on forms
+    //  ==============================================================================*/
+    .form-anchor {
+        @apply text-sm text-text-subtle hover:text-warning transition-colors duration-100 focus-visible:outline-none focus-visible:underline focus:text-warning;
+        transition: all 100ms ease-in-out !important;
+    }
+
+    /*  NOTE: =========================================================================/
+//  default dropdown from mary tweaked
+//  ==============================================================================*/
+    .auth-controls {
+        --auth-dropdown-width: 3.2rem;
+
+        details {
+            summary {
+                width: var(--auth-dropdown-width);
+                @apply aspect-square rounded-tl-none;
+            }
+
+            ul {
+                @apply rounded-tr-none border-none -translate-x-[calc(var(--auth-dropdown-width)+0.5rem)] -translate-y-[calc(var(--auth-dropdown-width)-0.15rem)] px-2 py-0.5 bg-base-300;
+                a:hover,
+                a:focus,
+                a:focus-visible {
+                    @apply text-accent-secondary;
+                }
+            }
+        }
+    }
+}
+
+@layer utilities {
+    .animate-fade-in-up {
+        animation: fade-in-up 0.5s ease-in-out;
+    }
+
+    .animate-fade-in {
+        animation: fade-in 0.5s ease-in;
+    }
+
+    .animate-slide-out {
+        -webkit-animation: slide-out-top 0.5s
+            cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+        animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+        animation-delay: 5000ms;
+    }
+
+    .animate-slide-out-short {
+        -webkit-animation: slide-out-top 0.5s
+            cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+        animation: slide-out-top 0.5s cubic-bezier(0.55, 0.085, 0.68, 0.53) both;
+        animation-delay: 2000ms;
+    }
+}
+
+/*  NOTE: =========================================================================/
+//  styles for cropper elements
+//  ==============================================================================*/
+form#image-uploader .tooltip[data-tip="Select image"]::after,
+form#image-uploader .tooltip[data-tip="Select image"]::before {
+    @apply rounded-lg bg-base-100 text-info;
+}
+
+form#image-uploader .modal-box {
+    @apply bg-base-300 text-text-primary;
+}
+
+form#image-uploader .modal-action {
+    @apply flex-row-reverse gap-8;
+    justify-content: end;
+}
+
+form#image-uploader .modal-action button:first-of-type {
+    @apply min-w-24 btn-primary text-text-primary;
+}
+
+form#image-uploader .modal-action button:last-of-type {
+    @apply min-w-24 btn-secondary text-text-primary;
+}
+
+form#image-uploader .cropper-line,
+form#image-uploader .cropper-point {
+    @apply bg-success;
+}
+
+form#image-uploader .cropper-point {
+    @apply scale-[2.5] origin-center;
+}
+
+form#image-uploader .cropper-view-box {
+    @apply outline-success outline-2;
+}
+
+form#image-uploader hr {
+    border-color: var(--text-primary);
+}
+
+form div:has(> input[type="password"]) button > svg:first-of-type {
+    @apply stroke-gray-400;
+}
+
+form div:has(> input[type="password"]) button:focus-visible,
+form div:has(> input[type="text"]) button:focus-visible {
+    @apply border-none outline-accent-secondary-subtle bg-purple-50 outline-offset-0;
+}
+
+#notable-preview-pane > *:not(button) {
+    @apply w-full;
+}
+
+/*  NOTE: =========================================================================/
+//  markdown editor component tweaks
+//  ==============================================================================*/
+#editor-wrapper label:first-of-type {
+    @apply text-2xl pb-8 text-accent-secondary flex justify-start gap-2;
+}
+
+#editor-wrapper > div:first-of-type {
+    @apply w-full md:px-8;
+}
+
+#editor-wrapper .editor-statusbar {
+    @apply text-text-subtle;
+}
+
+#editor-wrapper label {
+    @apply pt-8 relative font-normal w-1/2;
+    &::after {
+        content: "Editing note:";
+        @apply absolute top-0 text-text-primary text-xl font-bold;
+    }
+}
+
+.EasyMDEContainer:has(.editor-preview-active) {
+    @apply prose;
+    max-width: unset;
+}
+
+.EasyMDEContainer .CodeMirror-cursor {
+    border-left: 0.25rem solid var(--accent-secondary-subtle);
+}
+
+.EasyMDEContainer .editor-preview-active,
+.EasyMDEContainer .CodeMirror.cm-s-easymde.CodeMirror-wrap {
+    @apply bg-base-100 text-text-primary border-none px-8;
+}
+
+.EasyMDEContainer .editor-preview-active > *:first-child {
+    @apply mt-2;
+}
+
+.EasyMDEContainer .editor-toolbar {
+    @apply bg-base-300 border-none flex gap-1 flex-wrap text-sm lg:flex-nowrap md:text-base;
+}
+
+.EasyMDEContainer .editor-toolbar button {
+    @apply rounded-lg;
+}
+
+.EasyMDEContainer .editor-toolbar button.active {
+    @apply bg-accent-secondary-focus border-transparent;
+}
+
+.EasyMDEContainer .editor-toolbar button:hover,
+.EasyMDEContainer .editor-toolbar button:focus,
+.EasyMDEContainer .editor-toolbar button:focus-visible {
+    @apply bg-accent-secondary-subtle border-transparent text-base-100;
+}
+
+.EasyMDEContainer .editor-toolbar i.separator {
+    color: transparent;
+    border-right: 2px solid var(--accent-secondary-focus);
+    border-left: none;
+}
+
+.EasyMDEContainer .CodeMirror-selected {
+    @apply bg-base-200;
+}
+.EasyMDEContainer .CodeMirror-focused .CodeMirror-selected {
+    @apply !bg-base-300;
+}
+
+.EasyMDEContainer .CodeMirror-line::selection,
+.EasyMDEContainer .CodeMirror-line > span::selection,
+.EasyMDEContainer .CodeMirror-line > span > span::selection {
+    @apply !bg-base-300;
+}
+.EasyMDEContainer .CodeMirror-line::-moz-selection,
+.EasyMDEContainer .CodeMirror-line > span::-moz-selection,
+.EasyMDEContainer .CodeMirror-line > span > span::-moz-selection {
+    @apply !bg-base-300;
+}
+
+/*  NOTE: =========================================================================/
+//  accordion list and its pagination
+//  ==============================================================================*/
+.collapse-title::after {
+    @apply -mt-[0.35rem];
+}
+
+#notes-pagination nav p,
+#notes-pagination nav a,
+#notes-pagination nav button,
+#notes-pagination nav span {
+    @apply text-sm !text-text-subtle bg-base-300 overflow-hidden border-none border-2 focus:border-none focus-visible:border-none focus:!text-accent-secondary-focus focus:font-bold focus-visible:!text-accent-secondary-focus focus-visible:font-bold;
+
+    &[class*="cursor-default"] {
+        @apply !text-text-subtle opacity-30;
+    }
+}
+
+#notes-pagination nav p.leading-5 {
+    @apply hidden;
+}
+
+.snapshot-title {
+    --radius: 0.5rem;
+    &::after {
+        content: "";
+        position: absolute;
+        width: var(--radius);
+        aspect-ratio: 1;
+        background-image: radial-gradient(transparent 69%, var(--base-200) 69%);
+        background-size: 200% 200%;
+        rotate: 180deg;
+        left: calc(var(--radius) * -1);
+        bottom: var(--radius);
+    }
+    &::before {
+        content: "";
+        position: absolute;
+        width: var(--radius);
+        aspect-ratio: 1;
+        background-image: radial-gradient(transparent 69%, var(--base-200) 69%);
+        background-size: 200% 200%;
+        rotate: 270deg;
+        right: calc(var(--radius) * -1);
+        bottom: var(--radius);
+    }
+}
+
+/* HACK: =========================================================================/
+//  Fixing livewire:navigate breaking tailwind generated transitions. likely js is doing style injections or smth
+// and breaks so transitions need to be explicitly enforced in CSS with ! and it works then
+//  ==============================================================================*/
+#drawer-navigation,
+#secondary-nav,
+button[aria-label="Toggle theme"],
+button[aria-label="Toggle theme"] > div:first-of-type,
+#notable-listing-pane {
+    transition: all 200ms ease-in-out !important;
+}
+
+#li[role="nav-link"] {
+    transition: all 100ms ease-in-out !important;
+}
+
+#slot-content {
+    transition: all 200ms ease-in-out !important;
+    padding-left: 4rem !important;
+}
+#greeting {
+    transition: all 200ms ease-in-out !important;
+}
+
+#secondary-nav {
+    padding-left: 8rem !important;
+}
+
+body:has(#drawer-navigation[aria-expanded="true"]) {
+    #secondary-nav {
+        padding-left: 20rem !important;
+    }
+
+    #slot-content {
+        padding-left: 16rem !important;
+    }
+}
+
+.card div:is(.justify-between):has(.accordion-btn-fav):first-of-type {
+    align-items: start;
+}
+
+.card .accordion-btn-fav::before {
+    margin-bottom: -2.25rem;
+    margin-left: -0.25rem;
+}
+
+.archive-item-wrapper > div:nth-of-type(2) {
+    flex-grow: 1;
+}

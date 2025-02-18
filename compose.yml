@@ -1,0 +1,57 @@
+############
+# SERVICES #
+############
+
+services:
+  ###############
+  # NOTABLE APP #
+  ###############
+
+  notable-app:
+    build:
+      context: .
+      dockerfile: Dockerfile.app
+    restart: "unless-stopped"
+    container_name: notable-app
+    networks:
+      - intranet
+    ports:
+      - "127.0.0.1:9001:9000"
+    volumes:
+      - ".:/var/www/html"
+    working_dir: /var/www/html
+    depends_on:
+      - notable-db
+
+  notable-db:
+    image: "docker.io/library/postgres:alpine"
+    platform: linux/amd64
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:5432:5432"
+    environment:
+      PGDATA: /var/lib/postgresql/data/pgdata
+      POSTGRES_DB: "${DB_DATABASE}"
+      POSTGRES_USER: "${DB_USERNAME}"
+      POSTGRES_PASSWORD: "${DB_PASSWORD}"
+    volumes:
+      - "./docker_services/db_service/pg_data:/var/lib/postgresql/data"
+    container_name: notable-db
+    networks:
+      - intranet
+    healthcheck:
+      interval: 10s
+      test:
+        - CMD-SHELL
+        - "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"
+      timeout: 5s
+      retries: 5
+
+##################
+# DOCKER NETWORK #
+##################
+
+networks:
+  intranet:
+    name: intranet
+    driver: bridge
