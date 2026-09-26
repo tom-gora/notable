@@ -3,6 +3,8 @@
 <br>
 
 ![screenshot](./assets/landing_screeshot_dark.png)
+![screenshot_notes1](./assets/notes_screenshot_demo_dark.png)
+![screenshot_notes2](./assets/notes_screeshot_demo_light.png)
 
 <br>
 
