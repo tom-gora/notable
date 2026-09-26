@@ -1,66 +1,104 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Notable
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A note-taking web app built as a university project. Laravel 11 backend, Postgres database, Livewire/Alpine.js + Tailwind on the frontend, all running in Docker.
 
-## About Laravel
+The main feature: you paste an image of handwritten or printed notes and the app returns them as clean Markdown. It uses an OpenAI-compatible vision model (OpenRouter in this case, but the endpoint is configurable) to extract and format the text.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Stack
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- Laravel 11 / PHP 8.3
+- PostgreSQL 16
+- Alpine.js, Tailwind CSS, Vite
+- Docker Compose for dev and prod
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Running locally
 
-## Learning Laravel
+### 1. Clone the repo and copy `.env`
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+```bash
+git clone <repo-url> notable
+cd notable
+cp .env.example .env
+```
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+### 2. Fill in the placeholders in `.env`
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+Open `.env` and replace the `#set_...` placeholder values:
 
-## Laravel Sponsors
+- **`DB_PASSWORD`** (required) — generate with `openssl rand -base64 24`. This is the password Postgres uses to initialize the database on first run **and** the password Laravel uses to connect — the two must match. Must be set before the first `docker compose up`, because Postgres only reads `POSTGRES_PASSWORD` during data directory initialization. After that, changing the value will break the connection.
+- **`AI_API_KEY`** — your OpenRouter API key, or any other OpenAI-compatible service.
+- **`AI_MODEL`** — the model identifier, e.g. `google/gemma-4-26b-a4b-it` for OpenRouter.
+- **`AI_ENDPOINT`** — already set to `https://openrouter.ai/api/v1/chat/completions`. Change it if you're using a different provider.
+- **`APP_KEY`** — leave as `#generated_by_artisan` for now. The container entrypoint runs `php artisan key:generate` on first start and writes the result back to this file. (After first run it will be a real `base64:...` value.)
+- **Mail settings** (`MAIL_USERNAME`, `MAIL_PASSWORD`, `MAIL_FROM_ADDRESS`) — placeholders. Fill them in if you want real email to work, or skip and use `MAIL_MAILER=log` to write emails to the log file instead. `MAIL_PASSWORD` expects a [Google app password](https://myaccount.google.com/apppasswords), not your account password.
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+### 3. Verify `compose.override.yml` is present
 
-### Premium Partners
+`compose.override.yml` is committed and ships with the repo. It flips the prod hardening off (`read_only: false`) and bind-mounts your source tree into the container so edits on the host are visible without rebuilding. You shouldn't need to touch it for a default local run.
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+If you ever need to start fresh or you accidentally removed it, here's the minimum content:
 
-## Contributing
+```yaml
+services:
+  notable-app:
+    read_only: false
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+    volumes:
+      - "./storage:/var/www/html/storage:rw"
+      - "./app:/var/www/html/app:rw"
+      - "./bootstrap:/var/www/html/bootstrap:rw"
+      - "./config:/var/www/html/config:rw"
+      - "./database:/var/www/html/database:rw"
+      - "./resources:/var/www/html/resources:rw"
+      - "./routes:/var/www/html/routes:rw"
+      - "./public:/var/www/html/public:rw"
+      - "./.env:/var/www/html/.env:rw"
+```
 
-## Code of Conduct
+### 4. Build and start
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+```bash
+docker compose up --build
+```
 
-## Security Vulnerabilities
+The app is at `http://localhost:9001`. The Postgres data directory at `docker_services/db_service/pg_data/` is gitignored, so a fresh clone always starts with an empty database.
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+For live CSS reload, run in a second terminal:
+
+```bash
+npm install
+npm run dev
+```
+
+## Deploying to the VPS
+
+1. Clone the repo on the server.
+
+1. Place a production `.env` at the project root (with a real `APP_KEY` and prod database credentials).
+
+1. Run the prep script, which handles the rest:
+
+   ```bash
+   ./prep4prod.sh
+   ```
+
+The script removes the dev override, sets prod env values, patches the entrypoint, builds, and waits for the stack to be healthy.
+
+## Project layout
+
+- `app/Http/Controllers/ImageToMarkdownController.php` — the vision/OCR endpoint
+- `app/Http/Controllers/ImageOptimisationController.php` — server-side image resize
+- `app/Notable/` — domain code (forms, routes, controllers grouped by feature)
+- `routes/web.php` — web routes, including the `/note-images/...` streaming route that replaces Laravel's `storage:link`
+- `notable-entrypoint` — the container entrypoint script
+- `compose.yml` / `compose.override.yml` — production and dev compose files
+- `prep4prod.sh` — production deployment helper
+
+## Notes
+
+This is a school project and a proof of concept. It is not a SaaS, not production-hardened beyond what's needed for the demo deployment, and not intended for multi-tenant use.
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+MIT. See [LICENSE](LICENSE).
+
