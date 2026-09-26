@@ -107,16 +107,16 @@ sed -i -E 's|^# exec "\$@"$|exec "$@"|' "$ENTRYPOINT_FILE"
 
 log_ok "notable-entrypoint updated for production"
 
-# ---------------------------------------------------------------------------
-# 5. Build and start the production stack.
-# ---------------------------------------------------------------------------
-log_step "5/6 - Building and starting services..."
-docker compose up --build -d
+# 5. Build js assets
+log_step "5/7 - Installing JS packages and building assets..."
+npm i && npm run build
 
-# ---------------------------------------------------------------------------
-# 6. Wait for all services to be up and running.
-# ---------------------------------------------------------------------------
-log_step "6/6 - Waiting for services to come online..."
+# 6. Build and start the production stack.
+log_step "6/7 - Building and starting services..."
+docker compose up —build -d
+
+# 7. wait for all services to be up and running.
+log_step "7/7 - Waiting for services to come online..."
 
 SERVICES=$(docker compose config --services 2>/dev/null)
 if [ -z "$SERVICES" ]; then

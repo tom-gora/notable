@@ -79,18 +79,6 @@ RUN composer install --no-interaction --no-dev --optimize-autoloader
 
 COPY --chown=notableuser:notableuser vite.config.js tailwind.config.ts /var/www/html/
 
-RUN mkdir -p /tmp/asset-build && \
-    cp package.json package-lock.json vite.config.js tailwind.config.ts /tmp/asset-build/ && \
-    cp -r resources /tmp/asset-build/ && \
-    cp -r public /tmp/asset-build/ && \
-    cd /tmp/asset-build && \
-    npm install --no-audit --no-fund --no-save && \
-    npm run build && \
-    mkdir -p /var/www/html/public/build && \
-    cp -r public/build/. /var/www/html/public/build/ && \
-    cd /var/www/html && \
-    rm -rf /tmp/asset-build
-
 USER notableuser
 # run migrations, optimisations and all other deployment artisan crap
 # script while loops to wait until DB is 100% up to avoid delay breaking migrations

@@ -42,7 +42,7 @@
     </main>
 
     <a class="w-min form-anchor flex-wrap fixed bottom-2 right-4 flex justify-end items-center text-xs"
-        href="https://tomgora.online">
+        href="https://tomgora.online/work/notable/">
         <span class="text-xl text-warning">☚&nbsp;</span><span style="text-align: end;">BACK TO PORTFOLIO</span></a>
 </body>
 
