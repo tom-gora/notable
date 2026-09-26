@@ -11,12 +11,15 @@ GREEN="\033[32m"
 YELLOW="\033[33m"
 RESET="\033[0m"
 
-log_step()  { echo -e "\n${CYAN}[$(date +'%H:%M:%S')] $1${RESET}"; }
-log_info()  { echo -e "${BLUE}[INFO]${RESET} $1"; }
-log_ok()    { echo -e "${GREEN}[OK]${RESET} $1"; }
-log_warn()  { echo -e "${YELLOW}[WARN]${RESET} $1"; }
+log_step() { echo -e "\n${CYAN}[$(date +'%H:%M:%S')] $1${RESET}"; }
+log_info() { echo -e "${BLUE}[INFO]${RESET} $1"; }
+log_ok() { echo -e "${GREEN}[OK]${RESET} $1"; }
+log_warn() { echo -e "${YELLOW}[WARN]${RESET} $1"; }
 log_error() { echo -e "${RED}[ERROR]${RESET} $1" >&2; }
-die()       { log_error "$1"; exit 1; }
+die() {
+  log_error "$1"
+  exit 1
+}
 
 # Always operate from the script's own directory (project root).
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
@@ -58,16 +61,13 @@ toggle_env_var() {
   log_info "  ${KEY}=${VALUE}"
 }
 
-toggle_env_var "APP_ENV"   "production"
+toggle_env_var "APP_ENV" "production"
 toggle_env_var "APP_DEBUG" "false"
-toggle_env_var "APP_URL"   "https://notable.tomgora.online/"
+toggle_env_var "APP_URL" "https://notable.tomgora.online/"
 
 # ---------------------------------------------------------------------------
 # 4. Update notable-entrypoint for production.
-#    - Uncomment php artisan key:generate / migrate if commented.
-#    - Replace optimize:clear with prod cache build (config/route/view).
-#    - Comment out php artisan serve.
-#    - Uncomment exec "$@" so entrypoint defers to Dockerfile's CMD php-fpm.
+#    All operations below are idempotent - safe to re-run.
 # ---------------------------------------------------------------------------
 log_step "4/6 - Updating notable-entrypoint for production..."
 
@@ -76,26 +76,33 @@ if [ ! -f "$ENTRYPOINT_FILE" ]; then
   die "notable-entrypoint file not found at project root."
 fi
 
-# 4a. Uncomment key:generate and migrate if they are commented.
+# 4a. Uncomment key:generate and migrate if commented.
+# No-op if already uncommented (regex won't match).
 sed -i -E '
   s|^# php artisan key:generate --quiet$|php artisan key:generate --quiet|
   s|^# php artisan migrate --force --quiet$|php artisan migrate --force --quiet|
 ' "$ENTRYPOINT_FILE"
 
-# 4b. Replace optimize:clear with prod cache commands (idempotent).
-if grep -qE "^[# ]*php artisan optimize:clear --quiet" "$ENTRYPOINT_FILE"; then
-  sed -i '/^[# ]*php artisan optimize:clear --quiet$/c\
-# php artisan optimize:clear --quiet\
+# 4b. Comment out optimize:clear if not already commented.
+# No-op if already commented.
+sed -i -E 's|^php artisan optimize:clear --quiet$|# php artisan optimize:clear --quiet|' "$ENTRYPOINT_FILE"
+
+# 4c. Add cache commands after migrate, but only if not already present.
+# Grep check makes this idempotent - won't add duplicates on re-run.
+if ! grep -q "^php artisan config:cache --quiet$" "$ENTRYPOINT_FILE"; then
+  sed -i '/^php artisan migrate --force --quiet$/a\
 php artisan config:cache --quiet\
 php artisan route:cache --quiet\
 php artisan view:cache --quiet' "$ENTRYPOINT_FILE"
-  log_info "  Replaced optimize:clear with config:cache / route:cache / view:cache"
+  log_info "  Added config:cache / route:cache / view:cache after migrate"
 fi
 
-# 4c. Comment out php artisan serve.
+# 4d. Comment out php artisan serve.
+# No-op if already commented.
 sed -i -E 's|^php artisan serve --host=0\.0\.0\.0 --port=9000$|# php artisan serve --host=0.0.0.0 --port=9000|' "$ENTRYPOINT_FILE"
 
-# 4d. Uncomment exec "$@" so entrypoint defers to Dockerfile's CMD.
+# 4e. Uncomment exec "$@" so entrypoint defers to Dockerfile's CMD.
+# No-op if already uncommented.
 sed -i -E 's|^# exec "\$@"$|exec "$@"|' "$ENTRYPOINT_FILE"
 
 log_ok "notable-entrypoint updated for production"
@@ -118,7 +125,7 @@ fi
 
 log_info "Services to wait for: $SERVICES"
 
-MAX_WAIT=600   # 10 minutes
+MAX_WAIT=600 # 10 minutes
 INTERVAL=5
 ELAPSED=0
 TOTAL_COUNT=$(echo "$SERVICES" | wc -l)

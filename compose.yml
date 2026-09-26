@@ -36,6 +36,7 @@ services:
     volumes:
       - "./storage:/var/www/html/storage:rw"
       - "./bootstrap/cache:/var/www/html/bootstrap/cache:rw"
+      - "./public/build:/var/www/html/public/build:rw"
     working_dir: /var/www/html
     depends_on:
       notable-db:
