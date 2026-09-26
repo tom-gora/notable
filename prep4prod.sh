@@ -113,7 +113,7 @@ npm i && npm run build
 
 # 6. Build and start the production stack.
 log_step "6/7 - Building and starting services..."
-docker compose up -—build -d
+docker compose up --build -d
 
 # 7. wait for all services to be up and running.
 log_step "7/7 - Waiting for services to come online..."
