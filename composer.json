@@ -19,7 +19,6 @@
         "robsontenorio/mary": "^1.41"
     },
     "require-dev": {
-        "barryvdh/laravel-debugbar": "^3.14",
         "fakerphp/faker": "^1.23",
         "laravel/breeze": "^2.2",
         "laravel/pail": "^1.1",

@@ -3,11 +3,9 @@
 **/.git
 **/.gitignore
 **/docker_services
-**/tailwind.config.ts
 **/postcss.config.js
-**/composer.lock
+# **/composer.lock
 **/package.lock
-**/vite.config.js
 **/Dockerfile.app
 **/.bladeformatterrc.json
 **/.editorconfig

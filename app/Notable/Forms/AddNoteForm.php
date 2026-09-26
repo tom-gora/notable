@@ -97,19 +97,19 @@ class AddNoteForm extends Component {
 
         $response_text = $transcriber->noteToText($b64);
         if ($response_text === null) {
-            $this->addError('image_error', "Oops, Google couldn't decode the image at the moment.");
+            $this->addError('image_error', "Oops, we couldn't decode the image at the moment.");
             $this->dispatch('image_error');
 
             return null;
         }
-        $abs_strip = storage_path() . '/app/public/';
+
         $mdp = new MarkdownProcessor;
 
         $raw = $mdp->stripMdToPlain($response_text);
 
         $this->tmpCleanup();
         return [
-            'img_url' => Storage::url(str_replace($abs_strip, '', $optimized_img)),
+            'img_url' => '/note-images/' . basename($optimized_img),
             'extracted_data' => $raw,
             'title' => $this->note_title,
             'markdown' => $response_text,

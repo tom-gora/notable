@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 class ImageToMarkdownController extends Controller {
     protected string $endpoint;
@@ -49,24 +50,19 @@ class ImageToMarkdownController extends Controller {
      * @return array<string, mixed>|null
      */
     private function makeRequest(array $payload) : ?array {
-        $url = $this->endpoint;
-        if (!str_ends_with($url, '/chat/completions')) {
-            $url .= '/chat/completions';
-        }
-
-        try {
-            $response = Http::withHeaders([
-                'Authorization' => 'Bearer ' . $this->api_key,
-                'Content-Type' => 'application/json',
-            ])->timeout(120)->post($url, $payload);
-        } catch (\Throwable $e) {
-            return null;
-        }
+        $url = $this->endpoint ;
+        $response = Http::withHeaders([
+            'Authorization' => 'Bearer ' . $this->api_key,
+            'Content-Type' => 'application/json',
+        ])->timeout(120)->post($url, $payload);
 
         if (!$response->successful()) {
+            Log::error('AI vision API request failed', [
+                'status' => $response->status(),
+                'body' => $response->body(),
+            ]);
             return null;
         }
-
         return $response->json();
     }
 

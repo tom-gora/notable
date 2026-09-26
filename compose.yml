@@ -1,32 +1,53 @@
 ############
 # SERVICES #
 ############
-
 services:
   ###############
   # NOTABLE APP #
   ###############
-
   notable-app:
     build:
       context: .
       dockerfile: Dockerfile.app
-    restart: "unless-stopped"
     container_name: notable-app
+    restart: "unless-stopped"
+    # SECURITY: Prevent container from modifying its own binary/source code
+    read_only: true
+    user: "notableuser"
+    # SECURITY: Resource limits prevent the miner from freezing your SSH session
+    deploy:
+      resources:
+        limits:
+          cpus: "0.50"
+          memory: 512M
+          pids: 200
+    security_opt:
+      - "no-new-privileges:true"
+    cap_drop:
+      - ALL
     networks:
       - intranet
     ports:
       - "127.0.0.1:9001:9000"
+    tmpfs:
+      - /tmp
+      - /var/run
+      - /run
     volumes:
-      - ".:/var/www/html"
+      - "./storage:/var/www/html/storage:rw"
+      - "./bootstrap/cache:/var/www/html/bootstrap/cache:rw"
     working_dir: /var/www/html
     depends_on:
-      - notable-db
-
+      notable-db:
+        condition: service_healthy
+  ##############
+  # POSTGRESQL #
+  ##############
   notable-db:
     image: "docker.io/library/postgres:alpine"
     platform: linux/amd64
     restart: "unless-stopped"
+    # TODO: locally exposed to setup a tunneled ssh connection later down the line
     ports:
       - "127.0.0.1:5432:5432"
     environment:
@@ -46,11 +67,9 @@ services:
         - "pg_isready -U ${DB_USERNAME} -d ${DB_DATABASE}"
       timeout: 5s
       retries: 5
-
 ##################
 # DOCKER NETWORK #
 ##################
-
 networks:
   intranet:
     name: intranet

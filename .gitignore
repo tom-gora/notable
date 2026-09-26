@@ -33,3 +33,6 @@ auth.json
 # mine
 docker_services/
 
+/storage/logs/*.log
+!/storage/logs/.gitignore
+

@@ -19,20 +19,19 @@ printf "\n
 sleep 1 # to appreciate logo XD
 echo -e "${CYAN}[$(date +'%d-%b-%Y %H:%M:%S')] Waiting for the database to come online...${RESET}"
 while ! nc -zv -w30 notable-db 5432; do
-    echo -e "${CYAN}[$(date +'%d-%M-%Y %H:%M:%S')] Waiting for the database to come online...${RESET}"
-    sleep 5
+  echo -e "${CYAN}[$(date +'%d-%M-%Y %H:%M:%S')] Waiting for the database to come online...${RESET}"
+  sleep 5
 done
 
 echo -e "${CYAN}[$(date +'%d-%b-%Y %H:%M:%S')] Database service is online.${RESET}"
 echo -e "${CYAN}[$(date +'%d-%b-%Y %H:%M:%S')] Starting up the application in due order...${RESET}"
 echo -e "${CYAN}[$(date +'%d-%b-%Y %H:%M:%S')] EXECUTING ${BLUE}ARTISAN${CYAN} SCRIPTS${RESET}"
 
-php artisan storage:link --quiet
 php artisan key:generate --quiet
 php artisan migrate --force --quiet
 php artisan optimize:clear --quiet
 
-
 echo -e "${CYAN}[$(date +'%d-%b-%Y %H:%M:%S')] STARTING ${BLUE}PHP-FPM${CYAN} NOW. OFF TO THE RACES!${RESET}"
 
-exec "$@"
+php artisan serve --host=0.0.0.0 --port=9000
+# exec "$@"

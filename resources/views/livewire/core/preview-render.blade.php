@@ -14,6 +14,6 @@
             {!! $this->data['html'] !!}
         </div>
     @else
-        <img :alt="__('Note snapshot')" class="mt-8 h-full w-full object-contain" src="{{ $this->data['snapshot'] }}">
+        <img alt="{{ __('Note snapshot') }}" class="mt-8 h-full w-full object-contain" src="{{ $this->data['snapshot'] }}">
     @endif
 </div>

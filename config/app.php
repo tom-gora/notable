@@ -129,7 +129,10 @@ return [
         'g_app_id' => env('G_APP_ID'),
     ],
 
-    'gemini_api' => [
-        'g_ai_api_key' => env('G_AI_API_KEY'),
+    'ai' => [
+        'endpoint' => env('AI_ENDPOINT'),
+        'api_key'  => env('AI_API_KEY'),
+        'model'    => env('AI_MODEL'),
+        'prompt'   => env('AI_PROMPT'),
     ],
 ];

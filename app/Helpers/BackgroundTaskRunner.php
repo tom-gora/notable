@@ -12,9 +12,9 @@ class BackgroundTaskRunner {
     public function imageCleanupHook(Note $n) : bool {
         $img = basename($n->img_url);
 
-        if (!$img || !Storage::disk('public')->exists('note_images/' . $img)) {
+        if (!$img || !Storage::disk('local')->exists('note_images/' . $img)) {
             return false;
         }
-        return Storage::disk('public')->delete('note_images/' . $img);
+        return Storage::disk('local')->delete('note_images/' . $img);
     }
 }

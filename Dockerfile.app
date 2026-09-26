@@ -23,7 +23,6 @@ RUN apt-get update && \
     libtidy-dev \
     libmemcached-dev \
     netcat-openbsd \
-    sudo \
     tidy \
     zip \
     unzip \
@@ -67,23 +66,32 @@ RUN docker-php-ext-configure gd --with-freetype --with-jpeg --with-webp && \
 # Set the working directory
 WORKDIR /var/www/html
 
+# Set the required user (must exist before COPY --chown)
+RUN adduser --uid 1000 --disabled-password --gecos "" notableuser
+
 # Copy application code
-COPY . .
+COPY --chown=notableuser:notableuser . .
 
 RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local/bin --filename=composer
 
 # Install project dependencies
 RUN composer install --no-interaction --no-dev --optimize-autoloader
 
-# Set the required user
-RUN adduser --disabled-password --gecos "" notableuser && \
-echo "notableuser ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/notableuser && \
-chmod 0440 /etc/sudoers.d/notableuser && \
-chown -R notableuser:notableuser /var/www/html
+COPY --chown=notableuser:notableuser vite.config.js tailwind.config.ts /var/www/html/
+
+RUN mkdir -p /tmp/asset-build && \
+    cp package.json package-lock.json vite.config.js tailwind.config.ts /tmp/asset-build/ && \
+    cp -r resources /tmp/asset-build/ && \
+    cp -r public /tmp/asset-build/ && \
+    cd /tmp/asset-build && \
+    npm install --no-audit --no-fund --no-save && \
+    npm run build && \
+    mkdir -p /var/www/html/public/build && \
+    cp -r public/build/. /var/www/html/public/build/ && \
+    cd /var/www/html && \
+    rm -rf /tmp/asset-build
 
 USER notableuser
-RUN chmod -R 775 /var/www/html/storage /var/www/html/bootstrap/cache
-RUN chmod +x /var/www/html/notable-entrypoint
 # run migrations, optimisations and all other deployment artisan crap
 # script while loops to wait until DB is 100% up to avoid delay breaking migrations
 ENTRYPOINT ["/var/www/html/notable-entrypoint"]
