@@ -1,5 +1,11 @@
 # Notable
 
+<br>
+
+![screenshot](./assets/landing_screeshot_dark.png)
+
+<br>
+
 A note-taking web app built as a university project. Laravel 11 backend, Postgres database, Livewire/Alpine.js + Tailwind on the frontend, all running in Docker.
 
 The main feature: you paste an image of handwritten or printed notes and the app returns them as clean Markdown. It uses an OpenAI-compatible vision model (OpenRouter in this case, but the endpoint is configurable) to extract and format the text.
